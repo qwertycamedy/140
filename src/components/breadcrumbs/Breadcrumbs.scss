@@ -1,0 +1,40 @@
+.crumbs {
+  margin-top: 25px;
+  margin-bottom: 50px;
+  &__inner {
+    width: 100%;
+  }
+
+  &__list {
+    display: flex;
+    gap: 10px;
+
+    &-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      &:not(:last-child) {
+        &:after {
+          content: '/';
+        }
+      }
+    }
+
+    &-link {
+      color: var(--gray) !important;
+
+      @media(any-hover: hover) {
+        &:hover {
+          color: var(--accent-hover) !important;
+        }
+      }
+    }
+  }
+}
+
+@media(max-width: 1170px) {
+  .crumbs {
+    display: none;
+  }
+}

@@ -1,0 +1,376 @@
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  width: 100%;
+  max-width: max-content;
+
+  padding: 12px 30px;
+
+  border-radius: 4px;
+
+  &-bg {
+    color: var(--light);
+    background: var(--dark);
+
+    transition: background 0.2s linear, box-shadow .2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--dark-h);
+      }
+    }
+
+    &:active {
+      background: var(--dark-a);
+      box-shadow: var(--btn-a-sh);
+    }
+  }
+
+  &-br {
+    color: var(--dark);
+    border: 1px solid var(--dark);
+    background: transparent;
+
+    transition: color 0.2s linear, background 0.2s linear,
+      border-color 0.2s linear;
+
+    @media (any-hover: hover) {
+      &:hover {
+        border-color: var(--dark-h);
+      }
+    }
+  }
+}
+
+.link {
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--dark);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+
+  &-ul {
+    text-decoration: underline transparent;
+    transition: text-decoration 0.2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        text-decoration: underline currentColor;
+      }
+    }
+  }
+}
+
+.input {
+  padding: 10px 20px;
+  border-radius: var(--desktop-radius);
+  border: 1px solid var(--dark);
+
+  width: 100%;
+  display: flex;
+
+  color: var(--dark);
+
+  font-size: 16px;
+  font-weight: 400;
+
+  outline: none;
+
+  transition: border-color 0.2s linear;
+
+  &::placeholder {
+    color: #8d8d8d;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  &:focus {
+    border-color: var(--accent);
+  }
+
+  &-outer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-title {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  &-label {
+    position: relative;
+  }
+
+  &-ico {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(0, -50%);
+  }
+
+  @media (max-width: 1170px) {
+    &-title {
+      font-size: 20px;
+    }
+  }
+}
+
+.textarea {
+  padding: 10px 20px;
+  border-radius: var(--desktop-radius);
+  border: 1px solid var(--dark);
+
+  width: 100%;
+  display: flex;
+
+  color: var(--dark);
+
+  font-size: 16px;
+  font-weight: 400;
+
+  outline: none;
+
+  transition: border-color 0.2s linear;
+
+  &::placeholder {
+    color: var(--gray);
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  &:focus {
+    border-color: var(--accent);
+  }
+
+  &-outer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-title {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  &-label {
+    position: relative;
+  }
+
+  &-ico {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(0, -50%);
+  }
+}
+
+.select {
+  padding: 10px 20px;
+  border-radius: var(--desktop-radius);
+  border: 1px solid var(--dark);
+
+  appearance: none;
+
+  width: 100%;
+  display: flex;
+
+  color: var(--dark);
+
+  font-size: 16px;
+  font-weight: 400;
+
+  outline: none;
+
+  transition: border-color 0.2s linear;
+
+  &::placeholder {
+    color: var(--gray);
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  &:focus {
+    border-color: var(--accent);
+  }
+
+  &-outer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-title {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  &-label {
+    position: relative;
+  }
+
+  &-ico {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(0, -50%);
+  }
+}
+
+.option {
+  font-size: 16px;
+
+  &-placeholder {
+    color: #444;
+  }
+}
+
+.checkbox {
+  &-label {
+    position: relative;
+    display: flex;
+    gap: 9px;
+    cursor: pointer;
+  }
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+
+  &:checked {
+    & + .checkbox-custom > .checkbox-custom-img {
+      opacity: 1;
+    }
+  }
+
+  &-custom {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid var(--dark);
+
+    &-img {
+      transition: opacity 0.2s linear;
+      opacity: 0;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        border-color: var(--accent);
+      }
+    }
+
+    &:focus {
+      border-color: var(--accent);
+    }
+  }
+
+  &-text {
+    font-size: 20px;
+    font-weight: 400;
+    max-width: 249px;
+    line-height: 150%;
+    width: 100%;
+
+    & > a {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+  }
+
+
+  @media (max-width: 1170px) {
+    width: 20px;
+    height: 20px;
+    &-custom {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+    }
+    &-text {
+      font-size: 16px;
+      line-height: normal;
+    }
+  }
+}
+
+.title {
+  font-weight: 700;
+
+  &-main {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  &-section {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+}
+
+.text {
+  color: var(--gray);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120.607%;
+  letter-spacing: 0.12px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.fw {
+  &-400 {
+    font-weight: 400;
+  }
+
+  &-700 {
+    font-weight: 700;
+  }
+}
+
+.logo {
+  width: 64px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark);
+
+  &__ico {
+    width: inherit;
+    height: inherit;
+    flex-shrink: 0;
+    object-fit: contain;
+    fill: currentcolor;
+  }
+}

@@ -1,0 +1,24 @@
+
+:root {
+  // base
+  --ff: "CenturyGothic", sans-serif;
+  --content-width: 500px;
+  --container-offset: 15px;
+  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+
+  // colors
+  --light: #fff;
+  --dark: #222;
+  --dark-h: #111;
+  --dark-a: #000;
+
+  --gray: #737373;
+
+  --qc: #6468DA;
+
+  //shadows
+  --btn-a-sh: 0px -1px 6px 5px rgba(255, 255, 255, 0.35) inset;
+
+  //height
+  --header-height: 74px;
+}

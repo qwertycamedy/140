@@ -1,0 +1,27 @@
+.hero {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 70px !important;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10svh;
+}
+
+.title {
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    text-align: center;
+    max-width: 240px;
+    margin-bottom: 22px;
+}
+
+.btn {
+    max-width: 280px !important;
+}
