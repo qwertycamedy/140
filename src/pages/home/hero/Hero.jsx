@@ -1,6 +1,5 @@
 import MySection from 'components/_ui/section/MySection';
 import cl from './Hero.module.scss';
-import MyBtn from 'components/_ui/btn/MyBtn';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
