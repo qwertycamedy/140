@@ -19,7 +19,7 @@ const Burger = ({ isOpen, close }) => {
           setSelected={setSelectedLang}
         />
       </Group>
-      <Link className={`${cl.courses} btn btn-sb btn-g w-full`} to={'/courses'}>
+      <Link className={`${cl.courses} btn btn-sb btn-g w-full`} to={'/courses'} onClick={close}>
         Наши курсы
         <svg
           className="ico-24 stroke"
@@ -41,7 +41,7 @@ const Burger = ({ isOpen, close }) => {
           </g>
         </svg>
       </Link>
-      <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth'}>Войти</Link>
+      <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth'} onClick={close}>Войти</Link>
     </MyModalBot>
   );
 };

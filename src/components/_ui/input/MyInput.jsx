@@ -23,11 +23,12 @@ const MyInput = ({
         <input
           type={type}
           className={`${inputCl} input radius-mobile`}
-          placeholder={placeholder}
           required={required}
+          placeholder={placeholder}
           value={value}
           onChange={(e) => dispatch(setValue(e.target.value))}
         />
+        <span className={' input-placeholder'}>{placeholder}</span>
         {ico && (
           <img
             className={`${icoCl} input-ico`}

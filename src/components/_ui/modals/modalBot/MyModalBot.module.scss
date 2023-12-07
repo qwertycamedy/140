@@ -14,10 +14,10 @@
     transform: translate(0, 100%);
 
     transition: opacity .15s linear, transform .15s linear;
-
     &__active {
         opacity: 1;
         transform: translate(0, 0);
+        transition-delay: .3s;
     }
 }
 
