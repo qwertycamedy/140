@@ -41,7 +41,7 @@ const Burger = ({ isOpen, close }) => {
           </g>
         </svg>
       </Link>
-      <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth'} onClick={close}>Войти</Link>
+      <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth/in'} onClick={close}>Войти</Link>
     </MyModalBot>
   );
 };

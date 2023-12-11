@@ -10,6 +10,7 @@ import {
 } from 'store/slices/courses/coursesSlice';
 import { disableScroll } from 'hooks/disableScroll';
 import { enableScroll } from 'hooks/enableScroll';
+import Search from 'components/search/Search';
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -28,12 +29,7 @@ const Filters = () => {
   return (
     <>
       <div className={cl.filters}>
-        <MyInput
-          inputCl={cl.search}
-          placeholder={'Что ищете?'}
-          value={searchValue}
-          setValue={setSearchValue}
-        />
+        <Search searchValue={searchValue} setSearchValue={setSearchValue} placeholder={'Что ищете?'} />
         <MyBtn classNames={cl.btn + ' btn btn-bg fz-12'} onClick={openFilters}>
           Фильтры
         </MyBtn>

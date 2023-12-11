@@ -2,8 +2,8 @@ import { Helmet } from 'react-helmet';
 
 const MyPage = ({
   children,
-  metaTitle = 'MMO',
-  metaDescr = 'MMO',
+  metaTitle = '140',
+  metaDescr = '140',
   hiddenTitle,
   classNames,
 }) => {

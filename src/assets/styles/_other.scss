@@ -61,6 +61,19 @@
       background: var(--gray-l-a);
     }
   }
+
+  &-ico {
+    border-radius: 10px;
+    flex-wrap: nowrap;
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    padding: 0;
+    > svg, img {
+      width: 24px;
+      height: 24px;
+    }
+  }
 }
 
 .link {
@@ -76,6 +89,16 @@
   &-ul {
     text-decoration: underline transparent;
     transition: text-decoration 0.2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        text-decoration: underline currentColor;
+      }
+    }
+  }
+
+  &-accent {
+    color: var(--accent);
+
     @media (any-hover: hover) {
       &:hover {
         text-decoration: underline currentColor;
@@ -190,6 +213,15 @@
   &-10 {
     width: 10px;
     height: 10px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  > button {
+    margin-top: 10px;
   }
 }
 

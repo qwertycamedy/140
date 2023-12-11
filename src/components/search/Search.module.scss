@@ -1,0 +1,35 @@
+.search,
+.input {
+  max-width: 100%;
+  width: 100%;
+}
+
+.search {
+  position: relative;
+}
+
+.clear {
+    color: var(--gray);
+  z-index: 1;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s linear, visibility 0.15s linear,
+    pointer-events 0.15s linear;
+  > svg {
+    width: inherit;
+    height: inherit;
+  }
+
+  &__active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+}
