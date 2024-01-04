@@ -7,10 +7,15 @@ import MyModalBot from 'components/_ui/modals/modalBot/MyModalBot';
 import Burger from './burger/Burger';
 import { disableScroll } from 'hooks/disableScroll';
 import { enableScroll } from 'hooks/enableScroll';
+import { useLocation } from 'react-router-dom';
+import Profile from './profile/Profile';
+import { authSel } from 'store/slices/auth/authSlice';
 
 const Header = ({ headerCl, containerCl, innerCl }) => {
   const dispatch = useDispatch();
+  const {user} = useSelector(authSel);
   const { burger } = useSelector(headerSel);
+  const {pathname} = useLocation();
 
   const closeBurger = () => {
     dispatch(setBurger(false));
@@ -28,10 +33,16 @@ const Header = ({ headerCl, containerCl, innerCl }) => {
         <div className={`${containerCl} container`}>
           <div className={`${innerCl} ${cl.inner}`}>
             <Logo classNames={cl.logo} />
-            <button
-              className={clsx(cl.burger, { [cl.burger__active]: burger })}
-              onClick={openBurger}
-            ></button>
+            {
+              pathname === `/profile/${user.slug}` ? (
+                <Profile />
+              ) : (
+                <button
+                  className={clsx(cl.burger, { [cl.burger__active]: burger })}
+                  onClick={openBurger}
+                ></button>
+              )
+            }
           </div>
         </div>
       </header>

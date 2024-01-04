@@ -20,7 +20,8 @@
     "react-spring": "^9.7.3",
     "react-swipe-to-close-modal": "^1.4.0",
     "react-swipeable": "^7.0.1",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "swiper": "^11.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

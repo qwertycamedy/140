@@ -1,0 +1,32 @@
+.outer {
+    position: relative;
+    width: calc(100% + 15px);
+}
+
+.slider {
+    width: 100%;
+    padding-right: 15px !important;
+}
+
+.slide {
+    width: 231px !important;
+}
+
+.course {
+  &__cat,
+  &__title,
+  &__descr {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  &__cat,
+  &__title {
+    -webkit-line-clamp: 1;
+  }
+  &__descr {
+    -webkit-line-clamp: 2;
+  }
+}

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import cl from './Course.module.scss';
 
-const Course = ({ course }) => {
+const Course = ({ course, classNames, categoryCl, titleCl, descrCl }) => {
   return (
     <Link
-      className={cl.course}
+      className={cl.course + ` ${classNames}`}
       to={`/courses/${course.id}`}
       style={
         course.style && {
@@ -13,9 +13,9 @@ const Course = ({ course }) => {
         }
       }
     >
-      <p className={cl.category}>{course.category}</p>
-      <h5 className={`${cl.title} title title-block`}>{course.title}</h5>
-      <p className={`${cl.descr} text`}>{course.descr}</p>
+      <p className={`cl.category ${categoryCl}`}>{course.category}</p>
+      <h5 className={`${cl.title} title title-block ${titleCl}`}>{course.title}</h5>
+      <p className={`${cl.descr} text ${descrCl}`}>{course.descr}</p>
     </Link>
   );
 };

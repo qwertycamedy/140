@@ -7,11 +7,15 @@
   --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
 
   // colors
-  --accent: #00B37D;
   --light: #fff;
+
   --dark: #222;
   --dark-h: #111;
   --dark-a: #000;
+
+  --accent: #00B37D;
+  --accent-h: #00976a;
+  --accent-a: #007753;
 
   --gray: #737373;
   --gray-l: #ECECEC;

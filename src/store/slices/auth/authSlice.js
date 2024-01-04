@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isSign: false,
+  isSign: true,
 
   toIn: true,
   toUp: false,
@@ -10,6 +10,13 @@ const initialState = {
   email: '',
   pass: '',
   confirmPass: '',
+
+  user: {
+    id: 0,
+    name: "Qwerty Camedy",
+    num: "+7 708 665 48 17",
+    slug: 'qwerty_camedy',
+  },
 };
 
 const authSlice = createSlice({
