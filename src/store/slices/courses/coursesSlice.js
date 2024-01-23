@@ -36,6 +36,84 @@ const initialState = {
     },
   ],
 
+  myCourses: [
+    {
+      id: 1,
+      category: 'Имеется база',
+      title: 'Самая вышка!',
+      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
+      lessons: [
+        {
+          id: 1,
+          label: 'Где я и куда идти?',
+          path: '1',
+          isPassed: true,
+        },
+        {
+          id: 2,
+          label: 'Ориентиры для выпускника с большими планами и мечтами',
+          path: '2',
+          isPassed: false,
+        },
+        {
+          id: 3,
+          label: 'Становится потненько..',
+          path: '3',
+          isPassed: false,
+        },
+        {
+          id: 4,
+          label: 'Меня уже никто не остановит!',
+          path: '4',
+          isPassed: false,
+        },
+      ],
+      hoursCount: 32,
+      style: {
+        background: '#F6F6DC',
+        color: 'dark',
+      },
+    },
+    {
+      id: 2,
+      category: 'Имеется база',
+      title: 'Грантик со скрипом',
+      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
+      lessons: [
+        {
+          id: 1,
+          label: 'Где я и куда идти?',
+          path: '1',
+          isPassed: true,
+        },
+        {
+          id: 2,
+          label: 'Ориентиры для выпускника с большими планами и мечтами',
+          path: '2',
+          isPassed: false,
+        },
+        {
+          id: 3,
+          label: 'Становится потненько..',
+          path: '3',
+          isPassed: false,
+        },
+        {
+          id: 4,
+          label: 'Меня уже никто не остановит!',
+          path: '4',
+          isPassed: false,
+        },
+      ],
+      hoursCount: 32,
+      style: {
+        background: '#F6DCDC',
+        color: 'dark',
+      },
+    },
+  ],
+  currentMyCourse: null,
+
   searchValue: '',
 
   filtersModal: false,
@@ -84,8 +162,11 @@ const coursesSlice = createSlice({
   name: 'courses',
   initialState,
   reducers: {
-    setSearchValue: (state,action) => {
-        state.searchValue = action.payload;
+    setCurrentMyCourse: (state, action) => {
+      state.currentMyCourse = action.payload;
+    },
+    setSearchValue: (state, action) => {
+      state.searchValue = action.payload;
     },
     setFiltersModal: (state, action) => {
       state.filtersModal = action.payload;
@@ -99,7 +180,13 @@ const coursesSlice = createSlice({
   },
 });
 
-export const { setSearchValue, setFiltersModal, setSelectedGoal, setSelectedGuide } = coursesSlice.actions;
+export const {
+  setCurrentMyCourse,
+  setSearchValue,
+  setFiltersModal,
+  setSelectedGoal,
+  setSelectedGuide,
+} = coursesSlice.actions;
 export const coursesSel = (state) => state.courses;
 
 export default coursesSlice.reducer;

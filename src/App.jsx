@@ -9,7 +9,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { authSel } from 'store/slices/auth/authSlice';
 
 function App() {
-  const {isSign, user} = useSelector(authSel);
+  const {isAuth, user} = useSelector(authSel);
   const location = useLocation();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/courses" element={<CoursesPage />} />
         {
-          isSign ? (
+          isAuth ? (
             <Route path={`/profile/${user.slug}`} element={<ProfilePage />} />
           ) : (
             <>

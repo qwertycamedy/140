@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isSign: true,
+  isAuth: true,
 
   toIn: true,
   toUp: false,
@@ -23,8 +23,8 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setIsSign: (state, action) => {
-      state.isSign = action.payload;
+    setIsAuth: (state, action) => {
+      state.isAuth = action.payload;
     },
     setToIn: (state) => {
       state.toIn = true;
@@ -53,7 +53,7 @@ const authSlice = createSlice({
 export const {
   setToIn,
   setToUp,
-  setIsSign,
+  setIsAuth,
   setName,
   setEmail,
   setPass,

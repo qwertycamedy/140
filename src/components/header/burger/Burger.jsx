@@ -8,7 +8,7 @@ import { langsSel, setSelectedLang } from 'store/slices/lang/langSlice';
 import { authSel } from 'store/slices/auth/authSlice';
 
 const Burger = ({ isOpen, close }) => {
-  const {isSign, user} = useSelector(authSel);
+  const {isAuth, user} = useSelector(authSel);
   const { langs, selectedLang } = useSelector(langsSel);
 
   return (
@@ -44,7 +44,7 @@ const Burger = ({ isOpen, close }) => {
         </svg>
       </Link>
       {
-        isSign ? (
+        isAuth ? (
           <Link className={`${cl.auth} btn btn-bg w-full`} to={`/profile/${user.slug}`} onClick={close}>Профиль</Link>
         ) : (
           <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth/in'} onClick={close}>Войти</Link>
