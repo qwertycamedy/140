@@ -18,7 +18,7 @@ const In = () => {
     >
       <h1 className={`${outerCl.title} title title-section`}>Авторизация</h1>
       <MyForm classnames={outerCl.form}>
-        <MyInput value={email} setValue={setEmail} type='email' required placeholder={'E-mail'} />
+        <MyInput value={email} setValue={setEmail} type='email' required placeholder={'E-mail или номер телефона'} />
         <MyInput value={pass} setValue={setPass} type='password' required placeholder={'Пароль'} />
         <MyBtn classNames={outerCl.submit + ' btn-bg w-full'}>Войти</MyBtn>
       </MyForm>

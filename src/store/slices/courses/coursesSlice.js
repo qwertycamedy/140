@@ -68,7 +68,6 @@ const initialState = {
           isPassed: false,
         },
       ],
-      hoursCount: 32,
       style: {
         background: '#F6F6DC',
         color: 'dark',
@@ -105,7 +104,6 @@ const initialState = {
           isPassed: false,
         },
       ],
-      hoursCount: 32,
       style: {
         background: '#F6DCDC',
         color: 'dark',

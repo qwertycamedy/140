@@ -64,8 +64,7 @@ const MyCourse = ({
           {formattedIndex} - {course.title}
         </h5>
         <p className={`${cl.count} text`}>
-          <span>{course.lessons.length} уроков</span>,{' '}
-          <span>~{course.hoursCount} часа</span>
+          <span>{course.lessons.length} уроков</span>
         </p>
       </div>
       <animated.div className={cl.lessons} style={springProps} ref={contentRef}>
