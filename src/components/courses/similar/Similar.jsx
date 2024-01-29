@@ -5,10 +5,10 @@ import {Mousewheel} from 'swiper/modules'
 import 'swiper/css';
 import Course from '../course/Course';
 
-const Similar = ({ courses }) => {
+const Similar = ({ title, courses }) => {
   return (
     <MySection classNames={cl.similar} innerCl={cl.inner}>
-      <h3 className={`${cl.title} title title-section`}>Вам могут подойти</h3>
+      <h3 className={`${cl.title} title title-section`}>{title ? title : 'Вам могут подойти'}</h3>
       <div className={cl.outer}>
         <Swiper
           className={cl.slider}
