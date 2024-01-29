@@ -13,9 +13,11 @@ const Course = ({ course, classNames, categoryCl, titleCl, descrCl }) => {
         }
       }
     >
-      <p className={`cl.category ${categoryCl}`}>{course.category}</p>
-      <h5 className={`${cl.title} title title-block ${titleCl}`}>{course.title}</h5>
-      <p className={`${cl.descr} text ${descrCl}`}>{course.descr}</p>
+      <p className={`${categoryCl} text-10 color-gray`}>{course.category}</p>
+      <h5 className={`${cl.title} title title-block ${titleCl}`}>
+        {course.title}
+      </h5>
+      <p className={`${cl.descr} text-12 ${descrCl}`}>{course.descr}</p>
     </Link>
   );
 };

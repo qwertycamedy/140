@@ -2,6 +2,7 @@ import MyPage from 'components/_ui/page/MyPage';
 import MySection from 'components/_ui/section/MySection';
 import MyCourses from 'components/courses/MyCourses';
 import Similar from 'components/courses/similar/Similar';
+import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
 import { useSelector } from 'react-redux';
 import { authSel } from 'store/slices/auth/authSlice';
@@ -21,6 +22,7 @@ const ProfilePage = () => {
         <MyCourses courses={myCourses} currentMyCourse={currentMyCourse} setCurrentMyCourse={setCurrentMyCourse} />
         <Similar courses={courses} />
       </MyPage>
+      <Footer />
     </>
   );
 };

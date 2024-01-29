@@ -69,7 +69,8 @@
     height: 30px;
     max-width: 30px;
     padding: 0;
-    > svg, img {
+    > svg,
+    img {
       width: 24px;
       height: 24px;
     }
@@ -131,14 +132,19 @@
 }
 
 .text {
-  color: var(--gray);
-  font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 120.607%;
   letter-spacing: 0.12px;
-}
+  &-12 {
+    font-size: 12px;
+    line-height: 120.607%;
+  }
 
+  &-10 {
+    font-size: 10px;
+    line-height: normal;
+  }
+}
 
 .ico {
   &-80,
@@ -262,8 +268,9 @@
     left: 15px;
     font-size: 8px;
     top: 0;
-    transform: translate(0,-50%);
-    transition: top .15s linear, font-size .15s, transform .15s linear, color .15s linear;
+    transform: translate(0, -50%);
+    transition: top 0.15s linear, font-size 0.15s, transform 0.15s linear,
+      color 0.15s linear;
   }
 
   @media (any-hover: hover) {
@@ -275,7 +282,6 @@
       }
     }
   }
-  
 
   &:focus {
     border-color: var(--accent);
@@ -530,7 +536,7 @@
       display: flex;
       background: var(--dark);
       opacity: 0;
-      transition: opacity .15s linear;
+      transition: opacity 0.15s linear;
     }
 
     @media (any-hover: hover) {
@@ -682,6 +688,24 @@
   &-full {
     max-width: 100%;
     width: 100%;
+  }
+}
+
+.color {
+  &-gray {
+    color: var(--gray);
+  }
+}
+
+.br {
+  &-4 {
+    border-radius: 4px;
+  }
+  &-6 {
+    border-radius: 6px;
+  }
+  &-8 {
+    border-radius: 8px;
   }
 }
 

@@ -63,18 +63,18 @@ const MyCourse = ({
         <h5 className={`${cl.title} title title-block ${titleCl}`}>
           {formattedIndex} - {course.title}
         </h5>
-        <p className={`${cl.count} text`}>
+        <p className={`${cl.count} text-12`}>
           <span>{course.lessons.length} уроков</span>
         </p>
       </div>
       <animated.div className={cl.lessons} style={springProps} ref={contentRef}>
         {course.lessons.map((lesson, i) => (
           <Link
-            className={clsx(cl.lesson + ' text', {
+            className={clsx(cl.lesson + ' text-12', {
               [cl.lesson__passed]: lesson.isPassed,
             })}
             key={i}
-            to={lesson.path}
+            to={`courses/${course.id}/${lesson.path}`}
           >
             Урок {i + 1} {lesson.label}
           </Link>

@@ -10,8 +10,9 @@ import { enableScroll } from 'hooks/enableScroll';
 import { useLocation } from 'react-router-dom';
 import Profile from './profile/Profile';
 import { authSel } from 'store/slices/auth/authSlice';
+import GoBack from 'components/goBack/GoBack';
 
-const Header = ({ headerCl, containerCl, innerCl }) => {
+const Header = ({ goBack, headerCl, containerCl, innerCl }) => {
   const dispatch = useDispatch();
   const {user} = useSelector(authSel);
   const { burger } = useSelector(headerSel);
@@ -32,7 +33,13 @@ const Header = ({ headerCl, containerCl, innerCl }) => {
       <header className={`${cl.header} ${headerCl} fixed-block`}>
         <div className={`${containerCl} container`}>
           <div className={`${innerCl} ${cl.inner}`}>
-            <Logo classNames={cl.logo} />
+            {
+              goBack ? (
+                <GoBack />
+              ) : (
+                <Logo classNames={cl.logo} />
+              )
+            }
             {
               pathname === `/profile/${user.slug}` ? (
                 <Profile />

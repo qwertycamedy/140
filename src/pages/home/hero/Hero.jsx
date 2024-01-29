@@ -10,7 +10,7 @@ const Hero = () => {
         <br />
         Просто дай на лапу комиссии на тестировании
       </h1>
-      <p className={cl.subtitle + ' text'}>
+      <p className={cl.subtitle + ' text-12'}>
         Но если ты вдруг в себя поверил, то мы поможем сдать тебе честно!
       </p>
       <Link  className={cl.btn + ' btn btn-bg'} to="/courses">

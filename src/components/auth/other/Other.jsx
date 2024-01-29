@@ -30,7 +30,7 @@ const Other = ({ toIn, toUp }) => {
       )}
 
       <div className={cl.services}>
-        <p className={cl.services__label + ' text'}>Войти с помощью:</p>
+        <p className={cl.services__label + ' text-12'}>Войти с помощью:</p>
         <div className={cl.services__btns}>
           <MyBtn classNames={cl.services__btn + ' btn-ico btn-g'}>
             <svg
