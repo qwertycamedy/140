@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   text-align: center;
   font-size: 16px;
   font-weight: 400;
@@ -668,9 +669,60 @@
   margin-bottom: 40px;
 }
 
+.flex {
+  display: flex;
+
+  &-inline {
+    display: inline-flex;
+  }
+
+  &-col {
+    flex-direction: column;
+  }
+}
+
+.gap {
+  &-8 {
+    gap: 8px;
+  }
+
+  &-10 {
+    gap: 10px;
+  }
+
+  &-12 {
+    gap: 12px;
+  }
+
+  &-14 {
+    gap: 14px;
+  }
+
+  &-16 {
+    gap: 16px;
+  }
+
+  &-20 {
+    gap: 20px;
+  }
+
+  &-24 {
+    gap: 24px;
+  }
+
+  &-32 {
+    gap: 32px;
+  }
+}
+
+
 .fz {
   &-12 {
     font-size: 12px;
+  }
+
+  &-14 {
+    font-size: 14px;
   }
 }
 
@@ -688,6 +740,21 @@
   &-full {
     max-width: 100%;
     width: 100%;
+  }
+}
+
+.max-w {
+  &-280 {
+    max-width: 280px;
+    width: 100%;
+  }
+}
+
+.m {
+  &-x {
+    &-auto {
+      margin: 0 auto;
+    }
   }
 }
 

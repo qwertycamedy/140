@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import { useSpring, animated } from 'react-spring';
 
 const MyCourse = ({
+  userSlug,
   course,
   index,
   currentMyCourse,
@@ -74,7 +75,7 @@ const MyCourse = ({
               [cl.lesson__passed]: lesson.isPassed,
             })}
             key={i}
-            to={`courses/${course.id}/${lesson.path}`}
+            to={`/${userSlug}/highest/${lesson.id}`}
           >
             Урок {i + 1} {lesson.label}
           </Link>

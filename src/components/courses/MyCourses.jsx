@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const MyCourses = ({ courses, currentMyCourse, setCurrentMyCourse }) => {
+const MyCourses = ({ userSlug, courses, currentMyCourse, setCurrentMyCourse }) => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
@@ -27,6 +27,7 @@ const MyCourses = ({ courses, currentMyCourse, setCurrentMyCourse }) => {
       <div className={cl.courses}>
         {courses?.map((obj, i) => (
           <MyCourse
+            userSlug={userSlug}
             course={obj}
             key={obj.id}
             index={i}
