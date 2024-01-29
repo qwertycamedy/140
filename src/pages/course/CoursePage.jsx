@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Hero from './hero/Hero';
 import Benefits from './benefits/Benefits';
+import Requirements from './requiremets/Requirements';
 
 const CoursePage = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const CoursePage = () => {
       <MyPage metaTitle="140 | Страница курса" metaDescr="140 | Страница курса">
         <Hero />
         <Benefits />
+        <Requirements />
       </MyPage>
       <Footer />
     </>
