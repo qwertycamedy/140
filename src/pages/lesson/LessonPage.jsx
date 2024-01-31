@@ -11,7 +11,7 @@ const LessonPage = () => {
   const { user } = useSelector(authSel);
   const { lesson } = useParams();
 
-  const lessonFormat = 'download';
+  const lessonFormat = 'test';
 
   return (
     <>
