@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isComplete: true,
+  isComplete: false,
 
   questions: [
     {
@@ -76,17 +76,36 @@ const testSlice = createSlice({
     markAnswer: (state, action) => {
       const quesId = action.payload.quesId;
       const ansId = action.payload.ansId;
+
       state.questions = state.questions.map((ques) => {
-        ques.id === quesId &&
-          ques.answers.map((ans) =>
-            ans.id === ansId ? (ans.isMarked = true) : ans,
-          );
+        if (ques.id === quesId) {
+          ques.answers = ques.answers.map((ans) => {
+            if (ans.id === ansId) {
+              return { ...ans, isMarked: true };
+            } else {
+              return { ...ans, isMarked: false };
+            }
+          });
+        }
+        return ques;
       });
+
+      state.curQuestion.answers = state.curQuestion.answers.map((ans) => {
+        if (ans.id === ansId) {
+          return { ...ans, isMarked: true };
+        } else {
+          return { ...ans, isMarked: false };
+        }
+      });
+    },
+
+    setIsComplete: (state, action) => {
+      state.isComplete = action.payload;
     },
   },
 });
 
-export const { setCurQuestion, markAnswer } = testSlice.actions;
+export const { setCurQuestion, markAnswer, setIsComplete } = testSlice.actions;
 export const testSel = (state) => state.test;
 
 export default testSlice.reducer;

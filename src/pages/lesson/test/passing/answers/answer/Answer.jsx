@@ -1,9 +1,25 @@
+import { clsx } from 'clsx';
+import cl from './Answer.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { markAnswer, testSel } from 'store/slices/test/testSlice';
 
+const Answer = ({ ans, i }) => {
+  const dispatch = useDispatch();
+  const { curQuestion, questions } = useSelector(testSel);
 
-const Answer = () => {
+  const onMark = () => {
+    dispatch(markAnswer({ quesId: curQuestion.id, ansId: ans.id }));
+  };
+
   return (
-    <li>Answer</li>
-  )
-}
+    <li
+      className={clsx(cl.ans, { 'btn-accent': ans.isMarked })}
+      onClick={onMark}
+    >
+      <span className={cl.index + ' title title-block'}>{i + 1}</span>
+      <span className={cl.label + ' text text-12'}>{ans.label}</span>
+    </li>
+  );
+};
 
-export default Answer
+export default Answer;

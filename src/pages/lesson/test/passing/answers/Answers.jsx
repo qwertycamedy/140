@@ -3,9 +3,9 @@ import Answer from "./answer/Answer"
 
 const Answers = ({answers}) => {
   return (
-    <ul>
+    <ul className="flex flex-col gap-14">
         {answers?.map((ans, i) => (
-            <Answer ans={ans} key={i} />
+            <Answer ans={ans} i={i} key={i} />
         ))}
     </ul>
   )

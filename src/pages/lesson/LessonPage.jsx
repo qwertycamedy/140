@@ -23,7 +23,7 @@ const LessonPage = () => {
         {lessonFormat === 'read' ? (
           <Read lesson={lesson} />
         ) : lessonFormat === 'test' ? (
-          <Test lesson={lesson} />
+          <Test lesson={lesson} userSlug={user?.slug} />
         ) : lessonFormat === 'download' ? (
           <Download lesson={lesson} />
         ) : (

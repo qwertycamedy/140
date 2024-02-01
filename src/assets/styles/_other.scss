@@ -76,6 +76,21 @@
       height: 24px;
     }
   }
+
+  &-accent {
+    background: var(--accent);
+    color: var(--light);
+    transition: background 0.2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--accent-h);
+      }
+    }
+
+    &:active {
+      background: var(--accent-a);
+    }
+  }
 }
 
 .link {
@@ -715,7 +730,6 @@
   }
 }
 
-
 .fz {
   &-12 {
     font-size: 12px;
@@ -761,6 +775,10 @@
 .color {
   &-gray {
     color: var(--gray);
+  }
+
+  &-accent {
+    color: var(--accent);
   }
 }
 

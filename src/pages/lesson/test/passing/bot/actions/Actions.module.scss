@@ -1,0 +1,23 @@
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.prev, .next, .finish {
+    height: 38px !important;
+}
+
+.prev, .next {
+    padding: 10px 24px !important;
+}
+
+.next {
+    & > svg {
+        transform: rotate(180deg);
+    }
+}
+
+.finish {
+    max-width: 100% !important;
+}
