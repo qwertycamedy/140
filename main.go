@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/qwertycamedy/140/back/src/routes"
+)
 
 func main() {
-	fmt.Println("Hello 140!")
+	router := routes.SetupRoutes()
+	router.Run("localhost:3000")
 }
