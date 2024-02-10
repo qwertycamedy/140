@@ -1,14 +1,23 @@
 package models
 
-type Style struct {
-	Bg    string `json:"bg"`
-	Color string `json:"color"`
-}
+import (
+	"github.com/qwertycamedy/140/back/src/config"
+	"gorm.io/gorm"
+)
 
 type Course struct {
-	ID       string `json:"id"`
-	Category string `json:"category"`
-	Title    string `json:"title"`
-	Descr    string `json:"descr"`
-	Style    Style  `json:"style"`
+	gorm.Model
+	Category   string `json:"category"`
+	Title      string `json:"title"`
+	Descr      string `json:"descr"`
+	StyleBg    string `json:"style_bg"`
+	StyleColor string `json:"style_color"`
+}
+
+func (course *Course) CreateCourse() (*Course, error) {
+	err := config.DB.Model(&course).Create(&course).Error
+	if err != nil {
+		return &Course{}, err
+	}
+	return course, nil
 }

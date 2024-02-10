@@ -10,4 +10,5 @@ func CoursesGroupRouter(baseRouter *gin.RouterGroup) {
 
 	courses.GET("/", handlers.GetAllCourses)
 	courses.GET("/:id", handlers.GetCourseById)
+	courses.POST("/", handlers.CreateCourse)
 }
