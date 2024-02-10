@@ -38,11 +38,12 @@ func CreateCourse(c *gin.Context) {
 		return
 	}
 
+	if input.Title == "" || input.Category == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Не все поля заполнены", "status": http.StatusBadRequest})
+		return
+	}
+
 	newCourse, err := input.CreateCourse()
-	// if newCourse.Title == "" || newCourse.Category == "" || newCourse.Style.Bg == "" || newCourse.Style.Color == "" {
-	// 	c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Не все поля заполнены", "status": http.StatusBadRequest})
-	// 	return
-	// }
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": err.Error(), "data": nil})
 		return
