@@ -36,7 +36,7 @@ const initialState = {
     },
   ],
 
-  myCourses: [
+  userCourses: [
     {
       id: 1,
       category: 'Имеется база',
@@ -110,7 +110,83 @@ const initialState = {
       },
     },
   ],
-  currentMyCourse: null,
+  currentUserCourse: null,
+
+  adminCourses: [
+    {
+      id: 1,
+      category: 'Имеется база',
+      title: 'Самая вышка!',
+      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
+      lessons: [
+        {
+          id: 1,
+          label: 'Где я и куда идти?',
+          path: '1',
+          isPassed: true,
+        },
+        {
+          id: 2,
+          label: 'Ориентиры для выпускника с большими планами и мечтами',
+          path: '2',
+          isPassed: false,
+        },
+        {
+          id: 3,
+          label: 'Становится потненько..',
+          path: '3',
+          isPassed: false,
+        },
+        {
+          id: 4,
+          label: 'Меня уже никто не остановит!',
+          path: '4',
+          isPassed: false,
+        },
+      ],
+      style: {
+        background: '#F6F6DC',
+        color: 'dark',
+      },
+    },
+    {
+      id: 2,
+      category: 'Имеется база',
+      title: 'Грантик со скрипом',
+      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
+      lessons: [
+        {
+          id: 1,
+          label: 'Где я и куда идти?',
+          path: '1',
+          isPassed: true,
+        },
+        {
+          id: 2,
+          label: 'Ориентиры для выпускника с большими планами и мечтами',
+          path: '2',
+          isPassed: false,
+        },
+        {
+          id: 3,
+          label: 'Становится потненько..',
+          path: '3',
+          isPassed: false,
+        },
+        {
+          id: 4,
+          label: 'Меня уже никто не остановит!',
+          path: '4',
+          isPassed: false,
+        },
+      ],
+      style: {
+        background: '#F6DCDC',
+        color: 'dark',
+      },
+    },
+  ],
+  currentAdminCourse: null,
 
   searchValue: '',
 
@@ -160,8 +236,11 @@ const coursesSlice = createSlice({
   name: 'courses',
   initialState,
   reducers: {
-    setCurrentMyCourse: (state, action) => {
-      state.currentMyCourse = action.payload;
+    setCurrentUserCourse: (state, action) => {
+      state.currentUserCourse = action.payload;
+    },
+    setCurrentAdminCourse: (state, action) => {
+      state.currentAdminCourse = action.payload;
     },
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
@@ -179,7 +258,8 @@ const coursesSlice = createSlice({
 });
 
 export const {
-  setCurrentMyCourse,
+  setCurrentUserCourse,
+  setCurrentAdminCourse,
   setSearchValue,
   setFiltersModal,
   setSelectedGoal,

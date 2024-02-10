@@ -1,5 +1,26 @@
 .courses {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notFound {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+
+  &__title {
+    color: var(--dark) !important;
+  }
+
+  &__subtitle {
+    color: var(--gray) !important;
+    max-width: 260px !important;
+  }
+
+  &__btn {
+    padding: 16px !important;
+  }
 }

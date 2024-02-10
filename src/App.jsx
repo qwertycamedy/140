@@ -1,10 +1,10 @@
+import AdminPage from 'pages/admin/AdminPage';
 import AuthPage from 'pages/auth/AuthPage';
 import CoursePage from 'pages/course/CoursePage';
 import CoursesPage from 'pages/courses/CoursesPage';
 import HomePage from 'pages/home/HomePage';
 import LessonPage from 'pages/lesson/LessonPage';
 import NotFoundPage from 'pages/notFound/NotFoundPage';
-import AProfilePage from 'pages/profile/AProfilePage';
 import ProfilePage from 'pages/profile/ProfilePage';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -52,15 +52,8 @@ function App() {
 
         {isAuth && isAdmin && (
           <>
-            <Route
-              path="/"
-              element={<Navigate to={`/admin/${user.slug}`} />}
-            />
-            <Route
-              index
-              path={`/admin/${user.slug}`}
-              element={<AProfilePage />}
-            />
+            <Route path="/" element={<Navigate to={`/admin/${user.slug}`} />} />
+            <Route index path={`/admin/${user.slug}`} element={<AdminPage />} />
           </>
         )}
 

@@ -14,9 +14,9 @@ import GoBack from 'components/goBack/GoBack';
 
 const Header = ({ goBack, headerCl, containerCl, innerCl }) => {
   const dispatch = useDispatch();
-  const {user} = useSelector(authSel);
+  const { user } = useSelector(authSel);
   const { burger } = useSelector(headerSel);
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const closeBurger = () => {
     dispatch(setBurger(false));
@@ -33,23 +33,16 @@ const Header = ({ goBack, headerCl, containerCl, innerCl }) => {
       <header className={`${cl.header} ${headerCl} fixed-block`}>
         <div className={`${containerCl} container`}>
           <div className={`${innerCl} ${cl.inner}`}>
-            {
-              goBack ? (
-                <GoBack />
-              ) : (
-                <Logo classNames={cl.logo} />
-              )
-            }
-            {
-              pathname === `/profile/${user.slug}` ? (
-                <Profile />
-              ) : (
-                <button
-                  className={clsx(cl.burger, { [cl.burger__active]: burger })}
-                  onClick={openBurger}
-                ></button>
-              )
-            }
+            {goBack ? <GoBack /> : <Logo classNames={cl.logo} />}
+            {pathname === `/profile/${user.slug}` ||
+            pathname === `/admin/${user.slug}` ? (
+              <Profile />
+            ) : (
+              <button
+                className={clsx(cl.burger, { [cl.burger__active]: burger })}
+                onClick={openBurger}
+              ></button>
+            )}
           </div>
         </div>
       </header>

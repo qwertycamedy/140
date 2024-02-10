@@ -1,14 +1,14 @@
 import { useRef } from 'react';
-import cl from './MyCourse.module.scss';
+import cl from './UserCourse.module.scss';
 import { Link } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useSpring, animated } from 'react-spring';
 
-const MyCourse = ({
+const UserCourse = ({
   userSlug,
   course,
   index,
-  currentMyCourse,
+  currentUserCourse,
   onCourse,
   classNames,
   percentCl,
@@ -18,9 +18,9 @@ const MyCourse = ({
   
   //анимация открытия объекта
   const springProps = useSpring({
-    opacity: course?.id === currentMyCourse?.id ? '1' : '0',
+    opacity: course?.id === currentUserCourse?.id ? '1' : '0',
     maxHeight:
-      course?.id === currentMyCourse?.id
+      course?.id === currentUserCourse?.id
         ? contentRef.current !== null
           ? contentRef.current.scrollHeight + 59 + 'px'
           : '0'
@@ -45,7 +45,7 @@ const MyCourse = ({
   return (
     <div
       className={clsx(cl.course + ` ${classNames}`, {
-        [cl.course__active]: course?.id === currentMyCourse?.id,
+        [cl.course__active]: course?.id === currentUserCourse?.id,
       })}
     >
       <div
@@ -85,4 +85,4 @@ const MyCourse = ({
   );
 };
 
-export default MyCourse;
+export default UserCourse;

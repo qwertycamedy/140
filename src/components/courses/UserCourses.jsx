@@ -1,23 +1,21 @@
 import MySection from 'components/_ui/section/MySection';
 import cl from './Courses.module.scss';
-import MyCourse from './myCourse/MyCourse';
+import UserCourse from './userCourse/UserCourse';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const MyCourses = ({ userSlug, courses, currentMyCourse, setCurrentMyCourse }) => {
+const UserCourses = ({ userSlug, courses, currentUserCourse, setCurrentUserCourse }) => {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch(setCurrentMyCourse(null));
+    dispatch(setCurrentUserCourse(null));
   }, []);
 
   const onCourse = (item) => {
-    if (currentMyCourse?.id === item?.id) {
-      dispatch(setCurrentMyCourse(null));
+    if (currentUserCourse?.id === item?.id) {
+      dispatch(setCurrentUserCourse(null));
     } else {
-      dispatch(setCurrentMyCourse(item));
+      dispatch(setCurrentUserCourse(item));
     }
   };
 
@@ -26,12 +24,12 @@ const MyCourses = ({ userSlug, courses, currentMyCourse, setCurrentMyCourse }) =
       <h1 className="title title-section">Ваши курсы</h1>
       <div className={cl.courses}>
         {courses?.map((obj, i) => (
-          <MyCourse
+          <UserCourse
             userSlug={userSlug}
             course={obj}
             key={obj.id}
             index={i}
-            currentMyCourse={currentMyCourse}
+            currentUserCourse={currentUserCourse}
             onCourse={onCourse}
           />
         ))}
@@ -40,4 +38,4 @@ const MyCourses = ({ userSlug, courses, currentMyCourse, setCurrentMyCourse }) =
   );
 };
 
-export default MyCourses;
+export default UserCourses;

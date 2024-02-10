@@ -1,18 +1,17 @@
 import MyPage from 'components/_ui/page/MyPage';
-import MyCourses from 'components/courses/MyCourses';
-import Similar from 'components/courses/similar/Similar';
+import AdminCourses from 'components/courses/AdminCourses';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
 import { useSelector } from 'react-redux';
 import { authSel } from 'store/slices/auth/authSlice';
 import {
   coursesSel,
-  setCurrentMyCourse,
+  setCurrentAdminCourse,
 } from 'store/slices/courses/coursesSlice';
 
-const AProfilePage = () => {
+const AdminPage = () => {
   const { user } = useSelector(authSel);
-  const { courses, myCourses, currentMyCourse } = useSelector(coursesSel);
+  const { adminCourses, currentAdminCourse } = useSelector(coursesSel);
 
   return (
     <>
@@ -21,11 +20,16 @@ const AProfilePage = () => {
         metaTitle={`140 | ${user ? user.name : 'Админка'}`}
         metaDescr={`140 | ${user ? user.name : 'Админка'}`}
       >
-        Привет из админки
+        <AdminCourses
+          userSlug={user?.slug}
+          courses={adminCourses}
+          currentAdminCourse={currentAdminCourse}
+          setCurrentAdminCourse={setCurrentAdminCourse}
+        />
       </MyPage>
       <Footer />
     </>
   );
 };
 
-export default AProfilePage;
+export default AdminPage;

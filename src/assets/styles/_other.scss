@@ -4,7 +4,7 @@
   justify-content: center;
   gap: 10px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   width: 100%;
   max-width: max-content;
@@ -60,6 +60,36 @@
 
     &:active {
       background: var(--gray-l-a);
+    }
+  }
+
+  &-put {
+    background: var(--orange);
+    color: var(--light);
+    transition: background 0.2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--orange-h);
+      }
+    }
+
+    &:active {
+      background: var(--orange-a);
+    }
+  }
+
+  &-del {
+    background: var(--red);
+    color: var(--light);
+    transition: background 0.2s linear;
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--red-h);
+      }
+    }
+
+    &:active {
+      background: var(--red-a);
     }
   }
 
@@ -706,6 +736,30 @@
 
   &-col {
     flex-direction: column;
+  }
+}
+
+.justify {
+  &-center {
+    justify-content: center;
+  }
+
+  &-between {
+    justify-content: space-between;
+  }
+}
+
+.items {
+  &-start {
+    align-items: flex-start;
+  }
+
+  &-center {
+    align-items: center;
+  }
+
+  &-end {
+    align-items: flex-end;
   }
 }
 
