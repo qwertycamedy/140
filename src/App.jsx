@@ -18,6 +18,8 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  console.log('now front in "front"')
+
   return (
     <div className="site-container">
       <Routes>
