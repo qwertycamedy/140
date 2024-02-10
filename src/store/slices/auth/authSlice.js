@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isAuth: true,
+  isAdmin: true,
 
   toIn: true,
   toUp: false,
+  toAdmin: false,
 
   name: '',
   email: '',
@@ -26,12 +28,23 @@ const authSlice = createSlice({
     setIsAuth: (state, action) => {
       state.isAuth = action.payload;
     },
+    setIsAdmin: (state, action) => {
+      state.isAdmin = action.payload;
+    },
+
     setToIn: (state) => {
       state.toIn = true;
       state.toUp = false;
+      state.toAdmin = false;
     },
     setToUp: (state) => {
       state.toUp = true;
+      state.toIn = false;
+      state.toAdmin = false;
+    },
+    setToAdmin: (state) => {
+      state.toAdmin = true;
+      state.toUp = false;
       state.toIn = false;
     },
 
@@ -47,17 +60,27 @@ const authSlice = createSlice({
     setConfirmPass: (state, action) => {
       state.confirmPass = action.payload;
     },
+
+    clearFields: (state) => {
+      state.name = "";
+      state.email = "";
+      state.pass = "";
+      state.confirmPass = "";
+    }
   },
 });
 
 export const {
+  setIsAuth,
+  setIsAdmin,
   setToIn,
   setToUp,
-  setIsAuth,
+  setToAdmin,
   setName,
   setEmail,
   setPass,
   setConfirmPass,
+  clearFields,
 } = authSlice.actions;
 export const authSel = (state) => state.auth;
 

@@ -1,16 +1,23 @@
 import MyPage from 'components/_ui/page/MyPage';
 import Header from 'components/header/Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSel, setToIn, setToUp } from 'store/slices/auth/authSlice';
+import {
+  authSel,
+  clearFields,
+  setToAdmin,
+  setToIn,
+  setToUp,
+} from 'store/slices/auth/authSlice';
 import In from './in/In';
 import Up from './up/Up';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import cl from './AuthPage.module.scss';
+import Admin from './admin/Admin';
 
 const AuthPage = () => {
   const dispatch = useDispatch();
-  const { toIn, toUp } = useSelector(authSel);
+  const { toIn, toUp, toAdmin } = useSelector(authSel);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -18,18 +25,26 @@ const AuthPage = () => {
       dispatch(setToIn());
     } else if (pathname.includes('auth/up')) {
       dispatch(setToUp());
+    } else if (pathname.includes('auth/admin')) {
+      dispatch(setToAdmin());
     }
-  }, [dispatch, pathname]);
+
+    dispatch(clearFields());
+  }, [pathname]);
 
   return (
     <>
       <Header />
       <MyPage
         classNames={cl.main}
-        metaTitle={`140 | ${toIn ? 'Вход' : toUp && 'Регистрация'}`}
-        metaDescr={`140 | ${toIn ? 'Вход' : toUp && 'Регистрация'}`}
+        metaTitle={`140 | ${
+          toIn ? 'Вход' : toUp ? 'Регистрация' : toAdmin && 'Вход в админку'
+        }`}
+        metaDescr={`140 | ${
+          toIn ? 'Вход' : toUp ? 'Регистрация' : toAdmin && 'Вход в админку'
+        }`}
       >
-        {toIn ? <In /> : toUp && <Up />}
+        {toIn ? <In /> : toUp ? <Up /> : toAdmin && <Admin />}
       </MyPage>
     </>
   );

@@ -10,14 +10,16 @@
     line-height: 120% !important;
 }
 
-.services {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.admin {
+    color: var(--gray) !important;
 
-    &__btns {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    @media(any-hover: hover) {
+        &:hover {
+            color: var(--accent-h) !important;
+        }
+    }
+
+    &:active {
+        color: var(--accent-a) !important;
     }
 }

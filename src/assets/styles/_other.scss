@@ -111,6 +111,16 @@
         text-decoration: underline currentColor;
       }
     }
+
+    &-a {
+      transition: color 0.2s linear;
+      text-decoration: underline currentColor;
+      @media (any-hover: hover) {
+        &:hover {
+          text-decoration: underline currentColor;
+        }
+      }
+    }
   }
 
   &-accent {
@@ -118,8 +128,11 @@
 
     @media (any-hover: hover) {
       &:hover {
-        text-decoration: underline currentColor;
+        color: var(--accent-h);
       }
+    }
+    &:active {
+      color: var(--accent-a);
     }
   }
 }
@@ -809,5 +822,13 @@
     flex-shrink: 0;
     object-fit: contain;
     fill: currentcolor;
+  }
+}
+
+.margin {
+  &-x {
+    &-auto {
+      margin: 0 auto;
+    }
   }
 }
