@@ -8,15 +8,51 @@ import NotFoundPage from 'pages/notFound/NotFoundPage';
 import ProfilePage from 'pages/profile/ProfilePage';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { authSel } from 'store/slices/auth/authSlice';
 
 function App() {
   const { isAuth, isAdmin, user } = useSelector(authSel);
   const location = useLocation();
+  const navigate = useNavigate();
+  const pathname = location.pathname;
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // --- Redirects ---
+    if (isAuth && isAdmin && !pathname.includes('admin')) {
+      alert(
+        'Вы являетесь админом и сейчас Вам недоступны страницы простых смертных',
+      );
+      return navigate(`/admin/${user.slug}`);
+    }
+    if (!isAdmin && pathname.substring(0, 6) === "/admin") {
+      alert(
+        'Станьте админом, чтобы получить право использовать данные страницы',
+      );
+      return navigate(`/`);
+    }
+
+    if (isAuth && pathname.includes('auth')) {
+      alert('Вы уже авторизованы');
+      return navigate(`/`);
+    }
+
+    if (!isAuth && pathname.includes('profile')) {
+      alert('Авторизуйтесь, чтобы получить доступ к данным страницам');
+      return navigate(`/auth/in`);
+    }
+
+    if (!isAuth && pathname === '/auth') {
+      return navigate('/auth/in');
+    }
   }, [location]);
 
   console.log('now front in "front"');
