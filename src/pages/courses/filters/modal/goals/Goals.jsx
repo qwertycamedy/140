@@ -1,20 +1,20 @@
 import { useSelector } from 'react-redux';
 import { coursesSel, setSelectedGoal } from 'store/slices/courses/coursesSlice';
 import MyRadio from 'components/_ui/radio/MyRadio';
-import Group from 'components/_ui/group/Group';
+import MyGroup from 'components/_ui/group/MyGroup';
 
 const Goals = () => {
   const { goals, selectedGoal } = useSelector(coursesSel);
 
   return (
-    <Group title={'Цель:'}>
+    <MyGroup title={'Цель:'}>
       <MyRadio
         name={'goals'}
         options={goals}
         selected={selectedGoal}
         setSelected={setSelectedGoal}
       />
-    </Group>
+    </MyGroup>
   );
 };
 

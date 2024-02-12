@@ -225,7 +225,6 @@ const initialState = {
       label: 'Творческие',
     },
   ],
-
   selectedGuide: {
     id: 1,
     label: 'Физмат',

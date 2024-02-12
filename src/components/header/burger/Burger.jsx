@@ -1,4 +1,4 @@
-import Group from 'components/_ui/group/Group';
+import MyGroup from 'components/_ui/group/MyGroup';
 import MyModalBot from 'components/_ui/modals/modalBot/MyModalBot';
 import MyRadio from 'components/_ui/radio/MyRadio';
 import { Link } from 'react-router-dom';
@@ -8,20 +8,24 @@ import { langsSel, setSelectedLang } from 'store/slices/lang/langSlice';
 import { authSel } from 'store/slices/auth/authSlice';
 
 const Burger = ({ isOpen, close }) => {
-  const {isAuth, user} = useSelector(authSel);
+  const { isAuth, user } = useSelector(authSel);
   const { langs, selectedLang } = useSelector(langsSel);
 
   return (
     <MyModalBot modalIsOpen={isOpen} closeModal={close}>
-      <Group title={'Язык:'}>
+      <MyGroup title={'Язык:'}>
         <MyRadio
           name={'langs'}
           options={langs}
           selected={selectedLang}
           setSelected={setSelectedLang}
         />
-      </Group>
-      <Link className={`${cl.courses} btn btn-sb btn-g w-full`} to={'/courses'} onClick={close}>
+      </MyGroup>
+      <Link
+        className={`${cl.courses} btn btn-sb btn-g w-full`}
+        to={'/courses'}
+        onClick={close}
+      >
         Наши курсы
         <svg
           className="ico-24 stroke"
@@ -43,13 +47,23 @@ const Burger = ({ isOpen, close }) => {
           </g>
         </svg>
       </Link>
-      {
-        isAuth ? (
-          <Link className={`${cl.auth} btn btn-bg w-full`} to={`/profile/${user.slug}`} onClick={close}>Профиль</Link>
-        ) : (
-          <Link className={`${cl.auth} btn btn-bg w-full`} to={'/auth/in'} onClick={close}>Войти</Link>
-        )
-      }
+      {isAuth ? (
+        <Link
+          className={`${cl.auth} btn btn-bg w-full`}
+          to={`/profile/${user.slug}`}
+          onClick={close}
+        >
+          Профиль
+        </Link>
+      ) : (
+        <Link
+          className={`${cl.auth} btn btn-bg w-full`}
+          to={'/auth/in'}
+          onClick={close}
+        >
+          Войти
+        </Link>
+      )}
     </MyModalBot>
   );
 };

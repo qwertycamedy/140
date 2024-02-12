@@ -3,7 +3,6 @@ import Logo from 'components/logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import { headerSel, setBurger } from 'store/slices/header/headerSlice';
 import { clsx } from 'clsx';
-import MyModalBot from 'components/_ui/modals/modalBot/MyModalBot';
 import Burger from './burger/Burger';
 import { disableScroll } from 'hooks/disableScroll';
 import { enableScroll } from 'hooks/enableScroll';
@@ -35,7 +34,7 @@ const Header = ({ goBack, headerCl, containerCl, innerCl }) => {
           <div className={`${innerCl} ${cl.inner}`}>
             {goBack ? <GoBack /> : <Logo classNames={cl.logo} />}
             {pathname === `/profile/${user.slug}` ||
-            pathname === `/admin/${user.slug}` ? (
+            pathname.includes(`/admin`) ? (
               <Profile />
             ) : (
               <button

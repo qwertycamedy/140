@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import './NotFound.scss';
+import { authSel } from 'store/slices/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 const NotFound = ({
   children,
@@ -15,9 +17,11 @@ const NotFound = ({
   goBackNeed = false,
   ...props
 }) => {
+  const { isAdmin, user } = useSelector(authSel);
+
   return (
     <section className={`${classNames} notFound`} {...props}>
-      <div className={containerCl + " container notFound__container"}>
+      <div className={containerCl + ' container notFound__container'}>
         <div className={`notFound__inner ${innerCl}`}>
           {img && (
             <img className={`notFound__img ${imgCl}`} src={img} alt={title} />
@@ -28,7 +32,10 @@ const NotFound = ({
           )}
           {children}
           {goBackNeed && (
-            <Link className="notFound__btn btn btn-bg" to={'/'}>
+            <Link
+              className="notFound__btn btn btn-bg"
+              to={isAdmin ? `/admin/${user.slug}` : '/'}
+            >
               Вернуться на главную
             </Link>
           )}

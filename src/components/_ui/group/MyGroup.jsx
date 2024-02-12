@@ -1,6 +1,6 @@
-import cl from './Group.module.scss';
+import cl from './MyGroup.module.scss';
 
-const Group = ({ title, wrapperCl, titleCl, groupCl, children }) => {
+const MyGroup = ({ title, wrapperCl, titleCl, groupCl, children }) => {
   return (
     <div className={`${cl.wrapper} ${wrapperCl}`}>
       {title && (
@@ -11,4 +11,4 @@ const Group = ({ title, wrapperCl, titleCl, groupCl, children }) => {
   );
 };
 
-export default Group;
+export default MyGroup;

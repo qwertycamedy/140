@@ -2,6 +2,7 @@ import AdminPage from 'pages/admin/AdminPage';
 import AuthPage from 'pages/auth/AuthPage';
 import CoursePage from 'pages/course/CoursePage';
 import CoursesPage from 'pages/courses/CoursesPage';
+import CreateCourse from 'pages/createCourse/CreateCourse';
 import HomePage from 'pages/home/HomePage';
 import LessonPage from 'pages/lesson/LessonPage';
 import NotFoundPage from 'pages/notFound/NotFoundPage';
@@ -33,7 +34,7 @@ function App() {
       );
       return navigate(`/admin/${user.slug}`);
     }
-    if (!isAdmin && pathname.substring(0, 6) === "/admin") {
+    if (!isAdmin && pathname.substring(0, 6) === '/admin') {
       alert(
         'Станьте админом, чтобы получить право использовать данные страницы',
       );
@@ -90,6 +91,11 @@ function App() {
           <>
             <Route path="/" element={<Navigate to={`/admin/${user.slug}`} />} />
             <Route index path={`/admin/${user.slug}`} element={<AdminPage />} />
+            <Route
+              index
+              path={`/admin/${user.slug}/createCourse`}
+              element={<CreateCourse />}
+            />
           </>
         )}
 

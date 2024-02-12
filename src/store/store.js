@@ -6,6 +6,7 @@ import auth from './slices/auth/authSlice'
 import header from './slices/header/headerSlice'
 import courses from './slices/courses/coursesSlice'
 import test from './slices/test/testSlice'
+import createCourse from './slices/createCourse/createCourseSlice'
 
 
 export const store = configureStore({
@@ -17,5 +18,7 @@ export const store = configureStore({
 
     courses,
     test,
+
+    createCourse,
   },
 })

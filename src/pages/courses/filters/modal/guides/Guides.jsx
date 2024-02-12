@@ -5,7 +5,7 @@ import {
   setSelectedGuide,
 } from 'store/slices/courses/coursesSlice';
 import { clsx } from 'clsx';
-import Group from 'components/_ui/group/Group';
+import MyGroup from 'components/_ui/group/MyGroup';
 import MyBtn from 'components/_ui/btn/MyBtn';
 
 const Guides = () => {
@@ -17,7 +17,7 @@ const Guides = () => {
   };
 
   return (
-    <Group title={'Направление:'} groupCl={cl.guides}>
+    <MyGroup title={'Направление:'} groupCl={cl.guides}>
       {guides?.map((guide) => (
         <MyBtn
           classNames={clsx('fz-12', {
@@ -30,7 +30,7 @@ const Guides = () => {
           {guide.label}
         </MyBtn>
       ))}
-    </Group>
+    </MyGroup>
   );
 };
 
