@@ -1,6 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { loadStatus } from 'store/loadStatus';
+
+export const createCourse = createAsyncThunk(
+  'createCourse/createCourse',
+  async (bodyParams) => {
+    try {
+      const res = axios.post(
+        `${import.meta.env.VITE_API_URL}/courses`,
+        bodyParams,
+      );
+
+      console.log(res);
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+    }
+  },
+);
 
 const initialState = {
+  loadStatus: 'idle',
+
   title: '',
   descr: '',
 
@@ -60,14 +80,23 @@ const createCourseSlice = createSlice({
       state.selectedGuide = action.payload;
     },
   },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(createCourse.pending, (state) => {
+        state.loadStatus = loadStatus.pending;
+      })
+      .addCase(createCourse.fulfilled, (state) => {
+        state.loadStatus = loadStatus.fulfilled;
+      })
+      .addCase(createCourse.rejected, (state) => {
+        state.loadStatus = loadStatus.rejected;
+      });
+  },
 });
 
-export const {
-  setTitle,
-  setDescr,
-  setSelectedGoal,
-  setSelectedGuide,
-} = createCourseSlice.actions;
+export const { setTitle, setDescr, setSelectedGoal, setSelectedGuide } =
+  createCourseSlice.actions;
 export const createCourseSel = (state) => state.createCourse;
 
 export default createCourseSlice.reducer;
