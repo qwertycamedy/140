@@ -5,14 +5,13 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/qwertycamedy/140/back/src/config"
 	"github.com/qwertycamedy/140/back/src/models"
 )
 
 var courses []models.Course
 
 func GetAllCourses(c *gin.Context) {
-	config.DB.Find(&courses)
+	models.DB.Find(&courses)
 	c.IndentedJSON(http.StatusOK, courses)
 }
 

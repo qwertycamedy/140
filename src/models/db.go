@@ -1,4 +1,4 @@
-package config
+package models
 
 import (
 	"fmt"
@@ -27,4 +27,8 @@ func SetupDB() {
 	} else {
 		fmt.Println("🚀🚀🚀 ==> 140 <== 🚀🚀🚀")
 	}
+}
+
+func AutoMigrateModels() {
+	DB.AutoMigrate(&Course{})
 }

@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/qwertycamedy/140/back/src/config"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +14,7 @@ type Course struct {
 }
 
 func (course *Course) CreateCourse() (*Course, error) {
-	err := config.DB.Model(&course).Create(&course).Error
+	err := DB.Model(&course).Create(&course).Error
 	if err != nil {
 		return &Course{}, err
 	}
