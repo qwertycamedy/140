@@ -19,30 +19,30 @@ import {
 import cl from './CreateCourse.module.scss';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { authSel } from 'store/slices/auth/authSlice';
+import MyBotBar from 'components/_ui/botBar/MyBotBar';
 
 const CreateCourse = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { title, descr, goals, selectedGoal, guides, selectedGuide } =
-    useSelector(createCourseSel);
+  const { user } = useSelector(authSel);
+  const {
+    title,
+    descr,
+    goals,
+    selectedGoal,
+    guides,
+    selectedGuide,
+    createLoadStatus,
+    createdCourse,
+  } = useSelector(createCourseSel);
 
   const onGuide = (guide) => {
     dispatch(setSelectedGuide(guide));
   };
 
-  const onCreateCourse = () => {
-    // dispatch(
-    //   createCourse({
-    //     category: selectedGoal.label,
-    //     title,
-    //     descr,
-    //     style_bg: '#F6F6DC',
-    //     style_color: 'dark',
-    //   }),
-    // ).then((res) => {
-    //   console.log(res);
-    // });
-    dispatch(
+  const onCreateCourse = async () => {
+    const actionResult = await dispatch(
       createCourse({
         category: 'test',
         title: 'test',
@@ -50,9 +50,12 @@ const CreateCourse = () => {
         style_bg: '#F6F6DC',
         style_color: 'dark',
       }),
-    ).then((res) => {
-      console.log(res);
-    });
+    );
+
+    if (actionResult.meta.requestStatus === 'fulfilled') {
+      // Передайте необходимые параметры для навигации, например, ID созданного курса
+      navigate(`/admin/${user.slug}/${actionResult.payload.ID}/createLesson`);
+    }
   };
 
   return (
@@ -98,24 +101,14 @@ const CreateCourse = () => {
             ))}
           </MyGroup>
 
-          <div className={`${cl.btns}`}>
-            <div className="container">
-              <div className={`${cl.btns__inner} flex justify-between gap-10`}>
-                <MyBtn
-                  classNames={'btn-bg w-full'}
-                  onClick={() => navigate(-1)}
-                >
-                  Отмена
-                </MyBtn>
-                <MyBtn
-                  classNames={'btn-accent w-full'}
-                  onClick={onCreateCourse}
-                >
-                  Далее
-                </MyBtn>
-              </div>
-            </div>
-          </div>
+          <MyBotBar>
+            <MyBtn classNames={'btn-bg w-full'} onClick={() => navigate(-1)}>
+              Отмена
+            </MyBtn>
+            <MyBtn classNames={'btn-accent w-full'} onClick={onCreateCourse}>
+              Далее
+            </MyBtn>
+          </MyBotBar>
         </MySection>
       </MyPage>
       <Footer />

@@ -1,3 +1,13 @@
+.btns {
+  position: fixed;
+  bottom: 0;
+  background: var(--light);
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 15px 0;
+}
+
 .guides {
   gap: 7px;
 }

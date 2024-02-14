@@ -7,6 +7,7 @@ import header from './slices/header/headerSlice'
 import courses from './slices/courses/coursesSlice'
 import test from './slices/test/testSlice'
 import createCourse from './slices/createCourse/createCourseSlice'
+import createLesson from './slices/createLesson/createLessonSlice'
 
 
 export const store = configureStore({
@@ -20,5 +21,6 @@ export const store = configureStore({
     test,
 
     createCourse,
+    createLesson
   },
 })

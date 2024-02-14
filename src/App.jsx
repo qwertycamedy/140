@@ -3,6 +3,7 @@ import AuthPage from 'pages/auth/AuthPage';
 import CoursePage from 'pages/course/CoursePage';
 import CoursesPage from 'pages/courses/CoursesPage';
 import CreateCourse from 'pages/createCourse/CreateCourse';
+import CreateLesson from 'pages/createLesson/CreateLesson';
 import HomePage from 'pages/home/HomePage';
 import LessonPage from 'pages/lesson/LessonPage';
 import NotFoundPage from 'pages/notFound/NotFoundPage';
@@ -95,6 +96,11 @@ function App() {
               index
               path={`/admin/${user.slug}/createCourse`}
               element={<CreateCourse />}
+            />
+            <Route
+              index
+              path={`/admin/${user.slug}/:courseId/createLesson`}
+              element={<CreateLesson />}
             />
           </>
         )}

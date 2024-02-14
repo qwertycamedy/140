@@ -4,22 +4,25 @@ import { loadStatus } from 'store/loadStatus';
 
 export const createCourse = createAsyncThunk(
   'createCourse/createCourse',
-  async (bodyParams) => {
+  async (bodyParams, { rejectWithValue }) => {
     try {
-      const res = axios.post(
+      const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/courses`,
         bodyParams,
       );
 
-      console.log(res);
+      return data;
     } catch (err) {
       console.log('ошибка при создании курса: ', err);
+      alert(`Увы, но создать курс не вышло... Обратитесь в тех. поддержку`);
+      return rejectWithValue(err.message);
     }
   },
 );
 
 const initialState = {
-  loadStatus: 'idle',
+  createLoadStatus: 'idle',
+  createdCourse: null,
 
   title: '',
   descr: '',
@@ -84,13 +87,14 @@ const createCourseSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createCourse.pending, (state) => {
-        state.loadStatus = loadStatus.pending;
+        state.createLoadStatus = loadStatus.pending;
       })
-      .addCase(createCourse.fulfilled, (state) => {
-        state.loadStatus = loadStatus.fulfilled;
+      .addCase(createCourse.fulfilled, (state, action) => {
+        state.createLoadStatus = loadStatus.fulfilled;
+        state.createdCourse = action.payload;
       })
       .addCase(createCourse.rejected, (state) => {
-        state.loadStatus = loadStatus.rejected;
+        state.createLoadStatus = loadStatus.rejected;
       });
   },
 });
