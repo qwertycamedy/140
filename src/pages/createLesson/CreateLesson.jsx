@@ -14,10 +14,13 @@ import {
   setSelectedType,
   setTitle,
 } from 'store/slices/createLesson/createLessonSlice';
+import Read from './read/Read';
+import Resourse from './resourse/Resourse';
+import Test from './test/Test';
 
 const CreateLesson = () => {
   const dispatch = useDispatch();
-  const { title, descr, types, selectedType } = useSelector(createLessonSel);
+  const { title, types, selectedType } = useSelector(createLessonSel);
 
   const onCreateLesson = () => {
     console.log('hello');
@@ -31,7 +34,7 @@ const CreateLesson = () => {
           <MyInput
             outerCl={cl.name__outer}
             inputCl={cl.name}
-            placeholder={'Название курса*'}
+            placeholder={'Название урока*'}
             required={true}
             value={title}
             setValue={setTitle}
@@ -44,11 +47,13 @@ const CreateLesson = () => {
               setSelected={setSelectedType}
             />
           </MyGroup>
-          <MyTextarea
-            placeholder={'Описание курса'}
-            value={descr}
-            setValue={setDescr}
-          />
+          {selectedType.value === 'read' ? (
+            <Read />
+          ) : selectedType.value === 'test' ? (
+            <Test />
+          ) : (
+            selectedType.value === 'resourse' && <Resourse />
+          )}
         </MySection>
       </MyPage>
       <Footer />

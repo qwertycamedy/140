@@ -23,4 +23,8 @@ export const store = configureStore({
     createCourse,
     createLesson
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })

@@ -33,6 +33,37 @@ const initialState = {
     { value: 'resourse', label: 'Ресурсы' },
   ],
   selectedType: { value: 'read', label: 'Читалка' },
+
+  lessonPreview: null,
+  resourses: [],
+
+  testQuestions: [],
+  newQues: {
+    title: '',
+    questions: [
+      {
+        id: 1,
+        value: '',
+      },
+      {
+        id: 2,
+        value: '',
+      },
+      {
+        id: 3,
+        value: '',
+      },
+      {
+        id: 4,
+        value: '',
+      },
+      {
+        id: 5,
+        value: '',
+      },
+    ],
+  },
+  toNewQues: false,
 };
 
 const createLessonSlice = createSlice({
@@ -47,6 +78,77 @@ const createLessonSlice = createSlice({
     },
     setSelectedType: (state, action) => {
       state.selectedType = action.payload;
+    },
+
+    setLessonPreview: (state, action) => {
+      state.lessonPreview = action.payload;
+    },
+
+    setResourses: (state, action) => {
+      const newFile = action.payload;
+
+      if (state.resourses.find((item) => item.name === newFile.name)) {
+        return;
+      }
+
+      state.resourses.push(newFile);
+    },
+
+    delFile: (state, action) => {
+      const delFile = action.payload;
+
+      state.resourses = state.resourses.filter(
+        (item) => item.name !== delFile.name,
+      );
+    },
+
+    setToNewQues: (state, action) => {
+      state.toNewQues = action.payload;
+    },
+
+    setNewQuesTitle: (state, action) => {
+      state.newQues.title = action.payload;
+    },
+
+    clearNewQues: (state) => {
+      state.newQues = {
+        title: '',
+        questions: [
+          {
+            id: 1,
+            value: '',
+          },
+          {
+            id: 2,
+            value: '',
+          },
+          {
+            id: 3,
+            value: '',
+          },
+          {
+            id: 4,
+            value: '',
+          },
+          {
+            id: 5,
+            value: '',
+          },
+        ],
+      };
+    },
+
+    setNewQuesQues: (state, action) => {
+      const curQues = action.payload;
+      state.newQues.questions = state.newQues.questions.map((ques) =>
+        ques.id === curQues.id ? curQues : ques,
+      );
+    },
+
+    addNewQues: (state, action) => {
+      const newQues = action.payload;
+
+      state.testQuestions.push(newQues);
     },
   },
 
@@ -65,8 +167,19 @@ const createLessonSlice = createSlice({
   },
 });
 
-export const { setTitle, setDescr, setSelectedType } =
-  createLessonSlice.actions;
+export const {
+  setTitle,
+  setDescr,
+  setSelectedType,
+  setLessonPreview,
+  setResourses,
+  delFile,
+  setToNewQues,
+  setNewQuesTitle,
+  setNewQuesQues,
+  clearNewQues,
+  addNewQues,
+} = createLessonSlice.actions;
 export const createLessonSel = (state) => state.createLesson;
 
 export default createLessonSlice.reducer;

@@ -19,3 +19,9 @@
     font-weight: 700 !important;
   }
 }
+
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
