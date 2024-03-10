@@ -2,9 +2,11 @@ package controllers
 
 import (
 	"backend/models"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAllCourses(c *gin.Context) {
@@ -16,18 +18,19 @@ func GetAllCourses(c *gin.Context) {
 
 func GetCourseById(c *gin.Context) {
 	var course models.Course
+    result := models.DB.Unscoped().Where("id = ?", c.Param("id")).First(&course)
 
-	if err := models.DB.Unscoped().Where("id = ?", c.Param("id")).Find(&course).Error; err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Course not found!"})
+    if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found!"})
         return
     }
 
-	if course.DeletedAt.Valid {
+    if !course.DeletedAt.Time.IsZero() {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Course already deleted!"})
         return
     }
 
-	c.JSON(http.StatusOK, gin.H{"data": course})
+    c.JSON(http.StatusOK, gin.H{"data": course})
 }
 
 func CreateCourse(c *gin.Context) {
@@ -63,13 +66,14 @@ func CreateCourse(c *gin.Context) {
 func UpdateCourseById(c *gin.Context) {
 	var course models.Course
 	var updCourse models.UpdateCourseInput
+	result := models.DB.Unscoped().Where("id = ?", c.Param("id")).First(&course)
 
-	if err := models.DB.Unscoped().Where("id = ?", c.Param("id")).Find(&course).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Course not found!"})
-		return
-	}
+    if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found!"})
+        return
+    }
 
-	if course.DeletedAt.Valid {
+    if !course.DeletedAt.Time.IsZero() {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Course already deleted!"})
         return
     }
@@ -86,13 +90,14 @@ func UpdateCourseById(c *gin.Context) {
 
 func DeleteCourseById(c *gin.Context) {
 	var course models.Course
+	result := models.DB.Unscoped().Where("id = ?", c.Param("id")).First(&course)
 
-	if err := models.DB.Unscoped().Where("id = ?", c.Param("id")).Find(&course).Error; err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Course not found!"})
+    if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found!"})
         return
     }
 
-    if course.DeletedAt.Valid {
+    if !course.DeletedAt.Time.IsZero() {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Course already deleted!"})
         return
     }
