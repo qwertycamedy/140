@@ -10,7 +10,7 @@ func main() {
 
 	router := routes.SetupRoutes()
 	
-	err := router.Run(":4000")
+	err := router.Run()
 	if err != nil {
 		return
 	}
