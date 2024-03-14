@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"backend/models"
+	"backend/utils"
 	"errors"
 	"net/http"
+	"path/filepath"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -39,31 +42,39 @@ func GetCourseById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": course})
 }
-
 func CreateCourse(c *gin.Context) {
-	var newCourse models.CreateCourseInput
+	var course models.Course
+	category := c.PostForm("category")
+	name := c.PostForm("name")
+	descr := c.PostForm("descr")
+	backgroundColor := c.DefaultPostForm("background_color", "#F6DCDC")
+	textColor := c.DefaultPostForm("text_color", "dark")
 
-	if err := c.ShouldBindJSON(&newCourse); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if category == "" || name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Не все обязательные поля заполнены!"})
 		return
 	}
 
-	if newCourse.Category == "" || newCourse.Name == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Не все поля заполнены!"})
+	course.Category = category
+	course.Name = name
+	course.Descr = descr
+	course.BackgroundColor = backgroundColor
+	course.TextColor = textColor
+
+	file, err := c.FormFile("image")
+	if err == nil {
+		filePath := "./assets/img/" + filepath.Base(file.Filename)
+		if err := c.SaveUploadedFile(file, filePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
+			return
+		}
+
+		baseURL := utils.HandleBaseUrl()
+		course.Image = baseURL + filePath[2:]
+	} else if err != http.ErrMissingFile {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
 	}
-
-	if newCourse.BackgroundColor == "" || newCourse.TextColor == "" {
-		newCourse.BackgroundColor = "#F6DCDC"
-		newCourse.TextColor = "dark"
-	}
-
-	course := models.Course{
-		Category:        newCourse.Category,
-		Name:            newCourse.Name,
-		Descr:           newCourse.Descr,
-		BackgroundColor: newCourse.BackgroundColor,
-		TextColor:       newCourse.TextColor}
 
 	models.DB.Create(&course)
 
@@ -71,26 +82,48 @@ func CreateCourse(c *gin.Context) {
 }
 
 func UpdateCourseById(c *gin.Context) {
-	var course models.Course
-	var updCourse models.UpdateCourseInput
-	result := models.DB.Unscoped().Where("id = ?", c.Param("id")).First(&course)
+	courseID := c.Param("id")
 
+	var course models.Course
+	result := models.DB.First(&course, courseID)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Course not found!"})
 		return
 	}
 
-	if !course.DeletedAt.Time.IsZero() {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Course already deleted!"})
+	if category := c.PostForm("category"); category != "" {
+		course.Category = category
+	}
+	if name := c.PostForm("name"); name != "" {
+		course.Name = name
+	}
+	if descr := c.PostForm("descr"); descr != "" {
+		course.Descr = descr
+	}
+	if backgroundColor := c.PostForm("background_color"); backgroundColor != "" {
+		course.BackgroundColor = backgroundColor
+	}
+	if textColor := c.PostForm("text_color"); textColor != "" {
+		course.TextColor = textColor
+	}
+
+	file, err := c.FormFile("image")
+	if err == nil {
+		filePath := "./assets/img/" + strconv.Itoa(int(course.ID)) + "_" + filepath.Base(file.Filename)
+		if err := c.SaveUploadedFile(file, filePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
+			return
+		}
+		
+		baseURL := utils.HandleBaseUrl()
+		course.Image = baseURL + filePath[2:]
+	} else if err != http.ErrMissingFile {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
 	}
 
-	if err := c.ShouldBindJSON(&updCourse); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	models.DB.Model(&course).Updates(updCourse)
+	// Обновляем курс в базе данных
+	models.DB.Save(&course)
 
 	c.JSON(http.StatusOK, gin.H{"data": course})
 }
