@@ -8,6 +8,7 @@ func SetupRoutes() *gin.Engine {
 
 	userGroupRouter(v)
 	coursesGroupRouter(v)
+	lessonsGroupRouter(v)
 
 	return r
 }

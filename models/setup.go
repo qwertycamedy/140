@@ -15,7 +15,7 @@ func ConnectDB() {
 		panic("Failed to connect to db!")
 	}
 
-	err = db.AutoMigrate(&User{}, &Course{})
+	err = db.AutoMigrate(&User{}, &Course{}, &Lesson{}, &Question{}, &Answer{})
 	if err != nil {
 		panic("Failed to auto-migrate database schemas!")
 	}
