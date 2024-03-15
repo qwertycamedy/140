@@ -8,13 +8,13 @@ import (
 )
 
 func userGroupRouter(baseRouter *gin.RouterGroup) {
-	courses := baseRouter.Group("/users")
+	users := baseRouter.Group("/users")
 
-	courses.GET("/", controllers.GetAllUsers)
-	courses.GET("/:id", controllers.GetUserById)
-	courses.POST("/register", controllers.Register)
-	courses.POST("/login", controllers.Login)
-	courses.GET("/profile", middlewares.TokenAuthMiddleware(), controllers.GetProfile)
-	courses.PUT("/:id", middlewares.TokenAuthMiddleware(), controllers.UpdateUserById)
-	courses.DELETE("/:id", middlewares.TokenAuthMiddleware(), controllers.DeleteUserById)
+	users.GET("/", controllers.GetAllUsers)
+	users.GET("/:id", controllers.GetUserById)
+	users.POST("/register", controllers.Register)
+	users.POST("/login", controllers.Login)
+	users.GET("/profile", middlewares.RequireAuth, controllers.GetProfile)
+	users.PUT("/:id", middlewares.RequireAuth, controllers.UpdateUserById)
+	users.DELETE("/:id", middlewares.RequireAuth, controllers.DeleteUserById)
 }
