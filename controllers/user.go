@@ -96,13 +96,13 @@ func Register(c *gin.Context) {
 	}
 
 	var existingUser models.User
-    result := models.DB.Where("email = ?", body.Email).First(&existingUser)
-    if result.Error == nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Email already in use.",
-        })
-        return
-    }
+	result := models.DB.Where("email = ?", body.Email).First(&existingUser)
+	if result.Error == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Email already in use.",
+		})
+		return
+	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
 	if err != nil {
@@ -169,7 +169,6 @@ func Login(c *gin.Context) {
 		return
 	}
 
-
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Вход выполнен успешно!"})
@@ -181,4 +180,54 @@ func GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": user,
 	})
+}
+
+func GetUserCourses(c *gin.Context) {
+	userID, err := models.GetUserIDFromToken(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or missing token"})
+		return
+	}
+
+	var user models.User
+	if err = models.DB.Preload("Courses").First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": user.Courses})
+}
+
+func AddCourseToUser(c *gin.Context) {
+	userID, err := models.GetUserIDFromToken(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or missing token"})
+		return
+	}
+
+	var courseToAdd models.CourseToAdd
+	if err := c.ShouldBindJSON(&courseToAdd); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	var course models.Course
+	if err := models.DB.First(&course, courseToAdd.CourseID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+		return
+	}
+
+	var userCourse models.UserCourse
+	if err := models.DB.Where("user_id = ? AND course_id = ?", userID, courseToAdd.CourseID).First(&userCourse).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Course already added"})
+		return
+	}
+
+	userCourse = models.UserCourse{UserID: userID, CourseID: courseToAdd.CourseID}
+	if err := models.DB.Create(&userCourse).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to add course"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Course added successfully"})
 }

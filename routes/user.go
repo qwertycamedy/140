@@ -12,9 +12,13 @@ func userGroupRouter(baseRouter *gin.RouterGroup) {
 
 	users.GET("/", controllers.GetAllUsers)
 	users.GET("/:id", controllers.GetUserById)
+	//auth
 	users.POST("/register", controllers.Register)
 	users.POST("/login", controllers.Login)
 	users.GET("/profile", middlewares.RequireAuth, controllers.GetProfile)
 	users.PUT("/:id", middlewares.RequireAuth, controllers.UpdateUserById)
 	users.DELETE("/:id", middlewares.RequireAuth, controllers.DeleteUserById)
+	//courses
+	users.GET("/courses", controllers.GetUserCourses)
+	users.POST("/courses", controllers.AddCourseToUser)
 }
