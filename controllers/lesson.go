@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"backend/models"
-	"fmt"
+	"backend/utils"
 	"net/http"
+	"path/filepath"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -38,7 +39,7 @@ func GetLessonById(c *gin.Context) {
 		return
 	}
 
-	if err := models.DB.Preload("Questions").Preload("Questions.Answers").Where("id = ? AND course_id = ?", lessonId, courseId).First(&lesson).Error; err != nil {
+	if err := models.DB.Where("id = ? AND course_id = ?", lessonId, courseId).First(&lesson).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Lesson not found for the given course"})
 		} else {
@@ -51,6 +52,7 @@ func GetLessonById(c *gin.Context) {
 }
 
 func CreateLesson(c *gin.Context) {
+	var lesson models.Lesson
 	var courseID uint
 	if id, err := strconv.ParseUint(c.Param("id"), 10, 32); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid course ID format"})
@@ -59,21 +61,35 @@ func CreateLesson(c *gin.Context) {
 		courseID = uint(id)
 	}
 
-	var lesson models.Lesson
-	if err := c.BindJSON(&lesson); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid lesson data"})
+	name := c.PostForm("name")
+	descr := c.PostForm("descr")
+
+	if name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Не все обязательные поля заполнены!"})
 		return
 	}
 
 	lesson.CourseID = courseID
+	lesson.Name = name
+	lesson.Descr = descr
 
-	if err := models.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(&lesson).Error; err != nil {
-			return err
+	file, err := c.FormFile("image")
+	if err == nil {
+		filePath := "./assets/img/" + filepath.Base(file.Filename)
+		if err := c.SaveUploadedFile(file, filePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
+			return
 		}
-		return nil
-	}); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create lesson with tests"})
+
+		baseURL := utils.HandleBaseUrl()
+		lesson.Image = baseURL + filePath[2:]
+	} else if err != http.ErrMissingFile {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
+		return
+	}
+
+	if err := models.DB.Create(&lesson).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create lesson"})
 		return
 	}
 
@@ -97,43 +113,36 @@ func UpdateLessonById(c *gin.Context) {
 		lessonID = uint(id)
 	}
 
-	var lesson, updLesson, updatedLesson models.Lesson
+	var lesson models.Lesson
 
-	if err := c.ShouldBindJSON(&updLesson); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if name := c.PostForm("name"); name != "" {
+		lesson.Name = name
+	}
+	if descr := c.PostForm("descr"); descr != "" {
+		lesson.Descr = descr
+	}
+
+	lesson.CourseID = courseID
+	lesson.ID = lessonID
+
+	file, err := c.FormFile("image")
+	if err == nil {
+		filePath := "./assets/img/" + strconv.Itoa(int(lesson.ID)) + "_" + filepath.Base(file.Filename)
+		if err := c.SaveUploadedFile(file, filePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
+			return
+		}
+
+		baseURL := utils.HandleBaseUrl()
+		lesson.Image = baseURL + filePath[2:]
+	} else if err != http.ErrMissingFile {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
 	}
 
-	updLesson.CourseID = courseID
-	updLesson.ID = lessonID
+	models.DB.Save(&lesson)
 
-	if err := models.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&lesson).Where("id = ? AND course_id = ?", lessonID, courseID).Updates(updLesson).Error; err != nil {
-			return fmt.Errorf("error updating lesson: %w", err)
-		}
-
-		if err := tx.Where("lesson_id = ?", lessonID).Delete(&models.Question{}).Error; err != nil {
-			return fmt.Errorf("error deleting old questions: %w", err)
-		}
-
-		for _, question := range updLesson.Questions {
-			question.LessonID = lessonID
-			if err := tx.Create(&question).Error; err != nil {
-				return fmt.Errorf("error creating new question: %w", err)
-			}
-		}
-
-		return nil
-	}); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if err := models.DB.Preload("Questions").Preload("Questions.Answers").Where("id = ?", lessonID).First(&updatedLesson).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to retrieve updated lesson"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": updatedLesson})
+	c.JSON(http.StatusOK, gin.H{"data": lesson})
 }
 
 func DeleteLessonById(c *gin.Context) {

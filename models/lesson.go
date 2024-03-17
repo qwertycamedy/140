@@ -5,11 +5,9 @@ import "gorm.io/gorm"
 type Lesson struct {
 	gorm.Model
 	CourseID  uint       `json:"course_id"`
-	IsPassed  bool       `json:"is_passed"`
 	Name      string     `json:"name"`
 	Image     string     `json:"image"`
 	Descr     string     `json:"descr"`
-	Questions []Question `json:"questions" gorm:"foreignKey:LessonID"`
 }
 
 type Question struct {

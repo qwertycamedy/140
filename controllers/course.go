@@ -42,6 +42,7 @@ func GetCourseById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": course})
 }
+
 func CreateCourse(c *gin.Context) {
 	var course models.Course
 	category := c.PostForm("category")
