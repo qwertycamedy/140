@@ -198,6 +198,32 @@ func GetUserCourses(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": user.Courses})
 }
 
+func GetUserCourseByID(c *gin.Context) {
+    userID, err := models.GetUserIDFromToken(c)
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or missing token"})
+        return
+    }
+
+    courseID := c.Param("courseId")
+
+    var userCourse models.UserCourse
+    if err := models.DB.Where("user_id = ? AND course_id = ?", userID, courseID).First(&userCourse).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found for this user"})
+        return
+    }
+
+    var course models.Course
+    if err := models.DB.First(&course, courseID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"data": course})
+}
+
+
+
 func AddCourseToUser(c *gin.Context) {
 	userID, err := models.GetUserIDFromToken(c)
 	if err != nil {

@@ -20,5 +20,6 @@ func userGroupRouter(baseRouter *gin.RouterGroup) {
 	users.DELETE("/:id", middlewares.RequireAuth, controllers.DeleteUserById)
 	//courses
 	users.GET("/courses", controllers.GetUserCourses)
+	users.GET("/courses/:courseId", controllers.GetUserCourseByID)
 	users.POST("/courses", controllers.AddCourseToUser)
 }

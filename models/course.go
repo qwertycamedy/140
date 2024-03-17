@@ -4,7 +4,6 @@ import "gorm.io/gorm"
 
 type Course struct {
 	gorm.Model
-	CreatorID       uint   `json:"creator_id"`
 	Category        string `json:"category"`
 	Name            string `json:"name"`
 	Descr           string `json:"descr"`
