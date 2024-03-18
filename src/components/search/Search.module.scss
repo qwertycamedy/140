@@ -8,8 +8,34 @@
   position: relative;
 }
 
+.loader {
+  &_outer {
+    z-index: 1;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 20px !important;
+    height: 20px !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s linear, visibility 0.15s linear,
+      pointer-events 0.15s linear;
+    &_active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+  }
+  
+  width: inherit !important;
+  height: inherit !important;
+  border-width: 1px !important;
+}
+
 .clear {
-    color: var(--gray);
+  color: var(--gray);
   z-index: 1;
   position: absolute;
   right: 10px;

@@ -1,10 +1,28 @@
-import MyInput from 'components/_ui/input/MyInput';
 import cl from './Search.module.scss';
 import { clsx } from 'clsx';
 import { useDispatch } from 'react-redux';
+import { useCallback } from 'react';
+import debounce from 'lodash.debounce';
+import Loader from 'components/loader/Loader';
+import { loadStatus } from 'store/loadStatus';
 
-const Search = ({ searchValue, setSearchValue, placeholder }) => {
+const Search = ({
+  searchValue,
+  setSearchValue,
+  onDebFilter,
+  curCategory,
+  filtersLoadStatus,
+  placeholder,
+}) => {
   const dispatch = useDispatch();
+
+  const onChange = (e) => {
+    dispatch(setSearchValue(e.target.value));
+    onDebFilter({
+      category: curCategory ? curCategory.value : '',
+      searchValue: e.target.value,
+    });
+  };
 
   const onClear = () => {
     dispatch(setSearchValue(''));
@@ -12,11 +30,23 @@ const Search = ({ searchValue, setSearchValue, placeholder }) => {
 
   return (
     <div className={cl.search}>
-      <MyInput
-        inputCl={cl.input}
-        placeholder={placeholder}
-        value={searchValue}
-        setValue={setSearchValue}
+      <div className={`input-outer`}>
+        <label className={`input-label`}>
+          <input
+            type={'text'}
+            className={`input radius-mobile`}
+            placeholder={placeholder}
+            value={searchValue}
+            onChange={(e) => onChange(e)}
+          />
+          <span className={' input-placeholder'}>{placeholder}</span>
+        </label>
+      </div>
+      <Loader
+        outerCl={clsx(cl.loader_outer, {
+          [cl.loader_outer_active]: filtersLoadStatus === loadStatus.pending,
+        })}
+        loaderCl={cl.loader}
       />
       <button
         className={clsx(cl.clear, {

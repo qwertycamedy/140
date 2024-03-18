@@ -5,7 +5,7 @@ const Courses = ({courses}) => {
   return (
     <div className={cl.courses}>
         {courses?.map(obj => (
-            <Course course={obj} key={obj.id} />
+            <Course course={obj} key={obj.ID} />
         ))}
     </div>
   )

@@ -1,40 +1,64 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { loadStatus } from 'store/loadStatus';
+
+export const getAllCourses = createAsyncThunk(
+  'courses/getAllCourses',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/courses`,
+      );
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const getRandomCourses = createAsyncThunk(
+  'courses/getRandomCourses',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/courses/random`,
+      );
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const filterCourses = createAsyncThunk(
+  'courses/filterCourses',
+  async ({ category, searchValue }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_API_URL
+        }/courses/filter?category=${category}&search=${searchValue}`,
+      );
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
 
 const initialState = {
-  courses: [
-    {
-      id: 1,
-      category: 'Имеется база',
-      title: 'Самая вышка!',
-      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
-      style: {
-        background: '#F6F6DC',
-        color: 'dark',
-      },
-    },
-    {
-      id: 2,
-      category: 'С нуля',
-      title: 'Бокал на половину полон :D',
-      descr:
-        '50 баллов меня устроят. Один хрен кричать “Свободная касса!” через четыре года, разве не так?!',
-      style: {
-        background: '#DCEAF6',
-        color: 'dark',
-      },
-    },
-    {
-      id: 3,
-      category: 'С нуля',
-      title: 'Грантик со скрипом',
-      descr:
-        'И родаков не напрягаю, и сам за все раскидываю, но жизнь чет пахнет хуем. (но это не важнооооо..)',
-      style: {
-        background: '#F6DCDC',
-        color: 'dark',
-      },
-    },
-  ],
+  coursesLoadStatus: 'idle',
+  filtersLoadStatus: 'idle',
+  courses: null,
+
+  randomCoursesLoadStatus: 'idle',
+  randomCourses: null,
 
   userCourses: [
     {
@@ -189,46 +213,31 @@ const initialState = {
   currentAdminCourse: null,
 
   searchValue: '',
-
-  filtersModal: false,
-
-  goals: [
-    { value: '140', label: 'Самая вышка' },
-    { value: '100', label: 'На грант' },
-    { value: '50', label: 'Проходной' },
-  ],
-  selectedGoal: { value: '140', label: 'Самая вышка' },
-
-  guides: [
+  categories: [
     {
       id: 1,
       label: 'Физмат',
+      value: 'fizmat',
     },
     {
       id: 2,
       label: 'Творческие',
+      value: 'art',
     },
     {
       id: 3,
-      label: 'Физмат',
+      label: 'Геомат',
+      value: 'geomat',
     },
     {
       id: 4,
-      label: 'Творческие',
-    },
-    {
-      id: 5,
-      label: 'Физмат',
-    },
-    {
-      id: 6,
-      label: 'Творческие',
+      label: 'Test',
+      value: 'test',
     },
   ],
-  selectedGuide: {
-    id: 1,
-    label: 'Физмат',
-  },
+  curCategory: null,
+
+  filtersModal: false,
 };
 
 const coursesSlice = createSlice({
@@ -247,12 +256,47 @@ const coursesSlice = createSlice({
     setFiltersModal: (state, action) => {
       state.filtersModal = action.payload;
     },
-    setSelectedGoal: (state, action) => {
-      state.selectedGoal = action.payload;
+    setCurCategory: (state, action) => {
+      state.curCategory = action.payload;
     },
-    setSelectedGuide: (state, action) => {
-      state.selectedGuide = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllCourses.pending, (state) => {
+        state.coursesLoadStatus = loadStatus.pending;
+      })
+      .addCase(getAllCourses.fulfilled, (state, action) => {
+        state.coursesLoadStatus = loadStatus.fulfilled;
+        state.courses = action.payload.data;
+      })
+      .addCase(getAllCourses.rejected, (state) => {
+        state.coursesLoadStatus = loadStatus.rejected;
+        state.courses = null;
+      });
+    builder
+      .addCase(getRandomCourses.pending, (state) => {
+        state.randomCoursesLoadStatus = loadStatus.pending;
+      })
+      .addCase(getRandomCourses.fulfilled, (state, action) => {
+        state.randomCoursesLoadStatus = loadStatus.fulfilled;
+        state.randomCourses = action.payload.data;
+      })
+      .addCase(getRandomCourses.rejected, (state) => {
+        state.randomCoursesLoadStatus = loadStatus.rejected;
+        state.randomCourses = null;
+      });
+    builder
+      .addCase(filterCourses.pending, (state) => {
+        state.filtersLoadStatus = loadStatus.pending;
+      })
+      .addCase(filterCourses.fulfilled, (state, action) => {
+        state.filtersLoadStatus = loadStatus.fulfilled;
+        state.courses = action.payload.data;
+      })
+      .addCase(filterCourses.rejected, (state) => {
+        state.filtersLoadStatus = loadStatus.rejected;
+        state.courses = null;
+      });
   },
 });
 
@@ -261,8 +305,7 @@ export const {
   setCurrentAdminCourse,
   setSearchValue,
   setFiltersModal,
-  setSelectedGoal,
-  setSelectedGuide,
+  setCurCategory,
 } = coursesSlice.actions;
 export const coursesSel = (state) => state.courses;
 

@@ -6,16 +6,14 @@ const Course = ({ course, classNames, categoryCl, titleCl, descrCl }) => {
     <Link
       className={cl.course + ` ${classNames}`}
       to={`/courses/${course.id}`}
-      style={
-        course.style && {
-          background: course.style.background,
-          color: course.style.color,
-        }
-      }
+      style={{
+        background: course.background_color,
+        color: course.text_color === 'dark' ? '#000000' : '#ffffff',
+      }}
     >
       <p className={`${categoryCl} text-10 color-gray`}>{course.category}</p>
       <h5 className={`${cl.title} title title-block ${titleCl}`}>
-        {course.title}
+        {course.name}
       </h5>
       <p className={`${cl.descr} text-12 ${descrCl}`}>{course.descr}</p>
     </Link>

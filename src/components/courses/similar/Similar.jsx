@@ -21,7 +21,7 @@ const Similar = ({ title, courses }) => {
           }}
         >
           {courses?.map((course) => (
-            <SwiperSlide className={cl.slide} key={course.id}>
+            <SwiperSlide className={cl.slide} key={course.ID}>
               <Course
                 course={course}
                 categoryCl={cl.course__cat}
