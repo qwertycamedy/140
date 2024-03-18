@@ -16,17 +16,10 @@
   &__cat,
   &__title,
   &__descr {
+    -webkit-line-clamp: 1 !important;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-  }
-
-  &__cat,
-  &__title {
-    -webkit-line-clamp: 1;
-  }
-  &__descr {
-    -webkit-line-clamp: 2;
   }
 }

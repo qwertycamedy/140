@@ -10,6 +10,8 @@ import {
   coursesSel,
   getAllCourses,
   getRandomCourses,
+  setCurCategory,
+  setSearchValue,
 } from 'store/slices/courses/coursesSlice';
 import Courses from 'components/courses/Courses';
 import { useEffect } from 'react';
@@ -25,6 +27,8 @@ const CoursesPage = () => {
   useEffect(() => {
     dispatch(getAllCourses());
     dispatch(getRandomCourses());
+    dispatch(setSearchValue(''));
+    dispatch(setCurCategory(null));
   }, []);
 
   return (
@@ -53,24 +57,7 @@ const CoursesPage = () => {
             </>
           )}
         </MySection>
-        {randomCoursesLoadStatus === loadStatus.pending && <Loader />}
-        {randomCoursesLoadStatus === loadStatus.rejected && (
-          <NotFound
-            title={'Не удалось получить курсы'}
-            subtitle={
-              'К сожалению запрос получения курсов не смог отработать правильно, обратитесь к тех. поддержке'
-            }
-          />
-        )}
-        {randomCoursesLoadStatus === loadStatus.fulfilled && (
-          <>
-            {randomCourses && randomCourses.length ? (
-              <Similar title={'Популярные курсы:'} courses={randomCourses} />
-            ) : (
-              <NotFound title={'Курсов нет'} />
-            )}
-          </>
-        )}
+        <Similar title={"Популярные курсы"} courses={randomCourses} coursesLoadStatus={randomCoursesLoadStatus} />
       </MyPage>
       <Footer />
     </>

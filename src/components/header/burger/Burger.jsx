@@ -1,26 +1,14 @@
-import MyGroup from 'components/_ui/group/MyGroup';
 import MyModalBot from 'components/_ui/modals/modalBot/MyModalBot';
-import MyRadio from 'components/_ui/radio/MyRadio';
 import { Link } from 'react-router-dom';
 import cl from './Burger.module.scss';
 import { useSelector } from 'react-redux';
-import { langsSel, setSelectedLang } from 'store/slices/lang/langSlice';
 import { authSel } from 'store/slices/auth/authSlice';
 
 const Burger = ({ isOpen, close }) => {
   const { isAuth, user } = useSelector(authSel);
-  const { langs, selectedLang } = useSelector(langsSel);
 
   return (
     <MyModalBot modalIsOpen={isOpen} closeModal={close}>
-      <MyGroup title={'Язык:'}>
-        <MyRadio
-          name={'langs'}
-          options={langs}
-          selected={selectedLang}
-          setSelected={setSelectedLang}
-        />
-      </MyGroup>
       <Link
         className={`${cl.courses} btn btn-sb btn-g w-full`}
         to={'/courses'}

@@ -1,3 +1,7 @@
+.hero {
+    flex: 1 0 auto;
+}
+
 .title {
     margin-bottom: 10px;
 }
@@ -8,6 +12,8 @@
 
 .img {
     margin-bottom: 10px;
+    min-height: 190px;
+    height: 190px;
 }
 
 .btn {

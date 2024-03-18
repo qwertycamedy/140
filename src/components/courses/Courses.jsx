@@ -6,7 +6,7 @@ const Courses = ({courses}) => {
     <div className={cl.courses}>
         {courses?.map(obj => (
             <Course course={obj} key={obj.ID} />
-        ))}
+        )).reverse()}
     </div>
   )
 }

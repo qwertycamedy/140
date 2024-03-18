@@ -66,7 +66,7 @@ function App() {
           <>
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CoursesPage />} />
-            <Route path="/courses/:courseName" element={<CoursePage />} />
+            <Route path="/courses/:id" element={<CoursePage />} />
           </>
         )}
 

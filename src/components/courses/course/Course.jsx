@@ -5,7 +5,7 @@ const Course = ({ course, classNames, categoryCl, titleCl, descrCl }) => {
   return (
     <Link
       className={cl.course + ` ${classNames}`}
-      to={`/courses/${course.id}`}
+      to={`/courses/${course.ID}`}
       style={{
         background: course.background_color,
         color: course.text_color === 'dark' ? '#000000' : '#ffffff',
