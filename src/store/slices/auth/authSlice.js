@@ -1,6 +1,67 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { apiClient } from 'store/apiClient';
+import { loadStatus } from 'store/loadStatus';
+
+export const register = createAsyncThunk(
+  'courses/register',
+  async (bodyParams, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.post(`/users/register`, bodyParams);
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const login = createAsyncThunk(
+  'courses/login',
+  async (bodyParams, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.post(`/users/login`, bodyParams);
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const getProfile = createAsyncThunk(
+  'courses/getProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.get(`/users/profile`);
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const logout = createAsyncThunk(
+  'courses/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.get(`/users/logout`);
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
 
 const initialState = {
+  getProfileLoadStatus: 'idle',
+  authLoadStatus: 'idle',
+
   isAuth: false,
   isAdmin: false,
 
@@ -13,12 +74,7 @@ const initialState = {
   pass: '',
   confirmPass: '',
 
-  user: {
-    id: 0,
-    name: "Qwerty Camedy",
-    num: "+7 708 665 48 17",
-    slug: 'qwerty_camedy',
-  },
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -49,8 +105,8 @@ const authSlice = createSlice({
     },
 
     setName: (state, action) => {
-        state.name = action.payload;
-      },
+      state.name = action.payload;
+    },
     setEmail: (state, action) => {
       state.email = action.payload;
     },
@@ -62,11 +118,80 @@ const authSlice = createSlice({
     },
 
     clearFields: (state) => {
-      state.name = "";
-      state.email = "";
-      state.pass = "";
-      state.confirmPass = "";
-    }
+      state.name = '';
+      state.email = '';
+      state.pass = '';
+      state.confirmPass = '';
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(register.pending, (state) => {
+        state.authLoadStatus = loadStatus.pending;
+      })
+      .addCase(register.fulfilled, (state) => {
+        state.authLoadStatus = loadStatus.fulfilled;
+      })
+      .addCase(register.rejected, (state) => {
+        state.authLoadStatus = loadStatus.rejected;
+      });
+    builder
+      .addCase(login.pending, (state) => {
+        state.authLoadStatus = loadStatus.pending;
+      })
+      .addCase(login.fulfilled, (state) => {
+        state.authLoadStatus = loadStatus.fulfilled;
+      })
+      .addCase(login.rejected, (state) => {
+        state.authLoadStatus = loadStatus.rejected;
+      });
+    builder
+      .addCase(getProfile.pending, (state) => {
+        state.getProfileLoadStatus = loadStatus.pending;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.getProfileLoadStatus = loadStatus.fulfilled;
+        state.name = '';
+        state.pass = '';
+        state.email = '';
+        state.confirmPass = '';
+        state.isAuth = true;
+        state.user = action.payload.data;
+
+        localStorage.setItem('is_auth', JSON.stringify(true));
+      })
+      .addCase(getProfile.rejected, (state) => {
+        state.getProfileLoadStatus = loadStatus.rejected;
+        state.name = '';
+        state.pass = '';
+        state.email = '';
+        state.isAuth = false;
+        state.confirmPass = '';
+
+        localStorage.removeItem('is_auth');
+      });
+    builder
+      .addCase(logout.pending, (state) => {
+        state.authLoadStatus = loadStatus.pending;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.authLoadStatus = loadStatus.fulfilled;
+        state.name = '';
+        state.pass = '';
+        state.email = '';
+        state.confirmPass = '';
+        state.isAuth = false;
+        state.user = null;
+
+        localStorage.removeItem('is_auth');
+      })
+      .addCase(logout.rejected, (state) => {
+        state.authLoadStatus = loadStatus.rejected;
+        state.name = '';
+        state.pass = '';
+        state.email = '';
+        state.confirmPass = '';
+      });
   },
 });
 

@@ -1,8 +1,13 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import cl from './UserCourse.module.scss';
 import { Link } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useSpring, animated } from 'react-spring';
+import { useDispatch } from 'react-redux';
+import { getCourseLessons } from 'store/slices/lessons/lessonsSlice';
+import { loadStatus } from 'store/loadStatus';
+import Loader from 'components/loader/Loader';
+import NotFound from 'components/notFound/NotFound';
 
 const UserCourse = ({
   userSlug,
@@ -14,13 +19,29 @@ const UserCourse = ({
   percentCl,
   titleCl,
 }) => {
+  const dispatch = useDispatch();
   const contentRef = useRef(null);
-  
-  //анимация открытия объекта
+  const [lessons, setLessons] = useState(null);
+  const [lessonsLoadStatus, setLessonsLoadStatus] = useState('idle');
+
+  const onClick = (course) => {
+    onCourse(course);
+    setLessonsLoadStatus(loadStatus.pending);
+    dispatch(getCourseLessons({ courseId: course.ID })).then((action) => {
+      try {
+        setLessonsLoadStatus(loadStatus.fulfilled);
+        setLessons(action.payload.data);
+      } catch (err) {
+        setLessonsLoadStatus(loadStatus.rejected);
+        console.log('get course lessons error: ', err);
+      }
+    });
+  };
+
   const springProps = useSpring({
-    opacity: course?.id === currentUserCourse?.id ? '1' : '0',
+    opacity: course?.ID === currentUserCourse?.ID ? '1' : '0',
     maxHeight:
-      course?.id === currentUserCourse?.id
+      course?.ID === currentUserCourse?.ID
         ? contentRef.current !== null
           ? contentRef.current.scrollHeight + 59 + 'px'
           : '0'
@@ -37,49 +58,63 @@ const UserCourse = ({
     return newIndex;
   };
   const formattedIndex = formatIndex(index);
-  
-  //вычисление процента завершения курса
-  const passedLessons = course.lessons.filter(lesson => lesson.isPassed);
-  const passedPercent = (passedLessons.length / course.lessons.length) * 100;
 
   return (
     <div
       className={clsx(cl.course + ` ${classNames}`, {
-        [cl.course__active]: course?.id === currentUserCourse?.id,
+        [cl.course__active]: course?.ID === currentUserCourse?.ID,
       })}
     >
       <div
         className={cl.head}
-        style={
-          course.style && {
-            background: course.style.background,
-            color: course.style.color,
-          }
-        }
-        onClick={() => onCourse(course)}
+        style={{
+          background: course.background_color,
+          color: course.text_color === 'dark' ? '#000000' : '#ffffff',
+        }}
+        onClick={() => onClick(course)}
       >
-        <p className={`${cl.percent} + ${percentCl}`}>
-          Завершен на - {passedPercent}%
-        </p>
+        <p className="text text-10 color-gray">{course.category}</p>
         <h5 className={`${cl.title} title title-block ${titleCl}`}>
-          {formattedIndex} - {course.title}
+          {formattedIndex} - {course.name}
         </h5>
-        <p className={`${cl.count} text-12`}>
-          <span>{course.lessons.length} уроков</span>
-        </p>
+        <p className={`${cl.descr} text-12`}>{course.descr}</p>
       </div>
       <animated.div className={cl.lessons} style={springProps} ref={contentRef}>
-        {course.lessons.map((lesson, i) => (
-          <Link
-            className={clsx(cl.lesson + ' text-12', {
-              [cl.lesson__passed]: lesson.isPassed,
-            })}
-            key={i}
-            to={`/${userSlug}/highest/${lesson.id}`}
-          >
-            Урок {i + 1} {lesson.label}
-          </Link>
-        ))}
+        {lessonsLoadStatus === loadStatus.pending && <Loader />}
+        {lessonsLoadStatus === loadStatus.rejected && (
+          <NotFound
+            title={'Не удалось получить курсы'}
+            titleCl={cl.notFound_title}
+            subtitle={
+              'К сожалению запрос получения курсов не смог отработать правильно, обратитесь к тех. поддержке'
+            }
+            subtitleCl={cl.notFound_subtitle}
+          />
+        )}
+        {lessonsLoadStatus === loadStatus.fulfilled && (
+          <>
+            {lessons && lessons.length ? (
+              lessons?.map((lesson, i) => (
+                <Link
+                  className={clsx(cl.lesson + ' text-12', {
+                    [cl.lesson__passed]: lesson.isPassed,
+                  })}
+                  key={i}
+                  to={`/${course.ID}/${lesson.ID}`}
+                >
+                  <span className="color-gray">Урок {formatIndex(i)} - </span>{' '}
+                  {lesson.name}
+                </Link>
+              ))
+            ) : (
+              <NotFound
+                title={'Курсы не найдены'}
+                titleCl={cl.notFound_title}
+                subtitleCl={cl.notFound_subtitle}
+              />
+            )}
+          </>
+        )}
       </animated.div>
     </div>
   );

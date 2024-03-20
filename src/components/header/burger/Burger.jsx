@@ -38,7 +38,7 @@ const Burger = ({ isOpen, close }) => {
       {isAuth ? (
         <Link
           className={`${cl.auth} btn btn-bg w-full`}
-          to={`/profile/${user.slug}`}
+          to={`/profile/${user.ID}`}
           onClick={close}
         >
           Профиль

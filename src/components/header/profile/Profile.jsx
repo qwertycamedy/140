@@ -1,28 +1,42 @@
 import { useDispatch, useSelector } from 'react-redux';
 import cl from './Profile.module.scss';
-import { authSel } from 'store/slices/auth/authSlice';
+import { authSel, logout } from 'store/slices/auth/authSlice';
 import profileIco from 'assets/img/profile-ico.svg';
 import { clsx } from 'clsx';
 import { headerSel, setProfileModal } from 'store/slices/header/headerSlice';
 import { enableScroll } from 'hooks/enableScroll';
 import { disableScroll } from 'hooks/disableScroll';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { user } = useSelector(authSel);
-  const {profileModal} = useSelector(headerSel);
+  const { profileModal } = useSelector(headerSel);
+  const navigate = useNavigate();
 
   const haveImg = user.img ? user.img : profileIco;
 
   const onModal = () => {
-    if(!profileModal) {
-        disableScroll();
-        dispatch(setProfileModal(true));
+    if (!profileModal) {
+      disableScroll();
+      dispatch(setProfileModal(true));
     } else {
+      enableScroll();
+      dispatch(setProfileModal(false));
+    }
+  };
+
+  const onLogout = () => {
+    dispatch(logout()).then(() => {
+      try {
         enableScroll();
         dispatch(setProfileModal(false));
-    }
-  }
+        navigate('/');
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  };
 
   return (
     <div className={cl.outer}>
@@ -36,13 +50,20 @@ const Profile = () => {
           onClick={onModal}
         />
       </button>
-      <div className={clsx(`${cl.overlay} overlay modal__overlay`, {'active': profileModal})} onClick={onModal}></div>
-      <div className={clsx(`${cl.modal}`, {[cl.modal__active]: profileModal})}>
+      <div
+        className={clsx(`${cl.overlay} overlay modal__overlay`, {
+          active: profileModal,
+        })}
+        onClick={onModal}
+      ></div>
+      <div
+        className={clsx(`${cl.modal}`, { [cl.modal__active]: profileModal })}
+      >
         <div className={cl.info}>
           <h5 className={cl.name + ' title'}>{user.name}</h5>
-          <p className={cl.num}>{user.num}</p>
+          <p className={cl.num}>{user.email}</p>
         </div>
-        <button className={cl.exit} onClick={onModal}>
+        <button className={cl.exit} onClick={onLogout}>
           <svg
             className={cl.exit__ico + ' ico-24 stroke'}
             xmlns="http://www.w3.org/2000/svg"

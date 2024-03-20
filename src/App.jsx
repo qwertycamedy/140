@@ -9,7 +9,7 @@ import LessonPage from 'pages/lesson/LessonPage';
 import NotFoundPage from 'pages/notFound/NotFoundPage';
 import ProfilePage from 'pages/profile/ProfilePage';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Navigate,
   Route,
@@ -17,10 +17,12 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { authSel } from 'store/slices/auth/authSlice';
+import { loadStatus } from 'store/loadStatus';
+import { authSel, getProfile, logout } from 'store/slices/auth/authSlice';
 
 function App() {
-  const { isAuth, isAdmin, user } = useSelector(authSel);
+  const dispatch = useDispatch();
+  const { isAuth, isAdmin, user, getProfileLoadStatus } = useSelector(authSel);
   const location = useLocation();
   const navigate = useNavigate();
   const pathname = location.pathname;
@@ -29,35 +31,42 @@ function App() {
     window.scrollTo(0, 0);
 
     // --- Redirects ---
-    if (isAuth && isAdmin && !pathname.includes('admin')) {
-      alert(
-        'Вы являетесь админом и сейчас Вам недоступны страницы простых смертных',
-      );
-      return navigate(`/admin/${user.slug}`);
-    }
-    if (!isAdmin && pathname.substring(0, 6) === '/admin') {
-      alert(
-        'Станьте админом, чтобы получить право использовать данные страницы',
-      );
-      return navigate(`/`);
-    }
+    if (getProfileLoadStatus === loadStatus.fulfilled) {
+      if (isAuth && isAdmin && !pathname.includes('admin')) {
+        alert(
+          'Вы являетесь админом и сейчас Вам недоступны страницы простых смертных',
+        );
+        return navigate(`/admin/${user.slug}`);
+      }
+      if (!isAdmin && pathname.substring(0, 6) === '/admin') {
+        alert(
+          'Станьте админом, чтобы получить право использовать данные страницы',
+        );
+        return navigate(`/`);
+      }
 
-    if (isAuth && pathname.includes('auth')) {
-      alert('Вы уже авторизованы');
-      return navigate(`/`);
-    }
+      if (isAuth && pathname.includes('auth')) {
+        alert('Вы уже авторизованы');
+        return navigate(`/`);
+      }
 
-    if (!isAuth && pathname.includes('profile')) {
-      alert('Авторизуйтесь, чтобы получить доступ к данным страницам');
-      return navigate(`/auth/in`);
-    }
+      if (!isAuth && pathname.includes('profile')) {
+        alert('Авторизуйтесь, чтобы получить доступ к данным страницам');
+        return navigate(`/auth/in`);
+      }
 
-    if (!isAuth && pathname === '/auth') {
-      return navigate('/auth/in');
+      if (!isAuth && pathname === '/auth') {
+        return navigate('/auth/in');
+      }
     }
-  }, [location]);
+  }, [location, getProfileLoadStatus]);
 
-  console.log('now front in "front"');
+  useEffect(() => {
+    const storedIsAuth = localStorage.getItem('is_auth');
+    if (storedIsAuth) {
+      dispatch(getProfile());
+    }
+  }, []);
 
   return (
     <div className="site-container">
@@ -80,11 +89,8 @@ function App() {
 
         {isAuth && !isAdmin && (
           <>
-            <Route path={`/profile/${user.slug}`} element={<ProfilePage />} />
-            <Route
-              path={`/${user.slug}/:course/:lesson`}
-              element={<LessonPage />}
-            />
+            <Route path={`/profile/${user.ID}`} element={<ProfilePage />} />
+            <Route path={`/:courseId/:lessonId`} element={<LessonPage />} />
           </>
         )}
 

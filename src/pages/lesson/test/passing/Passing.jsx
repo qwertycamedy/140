@@ -5,28 +5,50 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurQuestion, testSel } from 'store/slices/test/testSlice';
 import Answers from './answers/Answers';
 import { useEffect } from 'react';
-import cl from './Passing.module.scss'
+import cl from './Passing.module.scss';
+import Loader from 'components/loader/Loader';
+import NotFound from 'components/notFound/NotFound';
+import { loadStatus } from 'store/loadStatus';
 
-const Passing = ({ lesson }) => {
+const Passing = ({ course, lesson }) => {
   const dispatch = useDispatch();
-  const { questions, curQuestion } = useSelector(testSel);
+  const { questions, curQuestion, questionsLoadStatus } = useSelector(testSel);
 
   useEffect(() => {
-    dispatch(setCurQuestion(questions[0]));
-  }, [])
+    if (questions) {
+      dispatch(setCurQuestion(questions[0]));
+    }
+  }, []);
 
-  console.log(questions)
+  console.log(questions, curQuestion);
 
   return (
     <MySection classNames={cl.passing}>
-      <p className={`${outerCl.suptitle} text text-12 color-gray`}>
-        Самая Вышка! / Урок {lesson}. Где я и куда идти?
-      </p>
-      <h1 className={`title title-section`}>
-        {curQuestion?.id}. {curQuestion?.question}
-      </h1>
-      <Answers answers={curQuestion?.answers} />
-      <Bot />
+      {questionsLoadStatus === loadStatus.pending && <Loader />}
+      {questionsLoadStatus === loadStatus.rejected && (
+        <NotFound
+          title={'Не удалось получить курсы'}
+          subtitle={
+            'К сожалению запрос получения вопросов не смог отработать правильно, обратитесь к тех. поддержке'
+          }
+        />
+      )}
+      {questionsLoadStatus === loadStatus.fulfilled && (
+        <>
+          {questions ? (
+            <>
+              <p className={`${outerCl.suptitle} text text-12 color-gray`}>
+                Курс - {course.name} / Урок - {lesson.name}
+              </p>
+              <h1 className={`title title-section`}>{curQuestion?.label}</h1>
+              <Answers answers={curQuestion?.answers} />
+              <Bot />
+            </>
+          ) : (
+            <NotFound title={'Урок не найден'} />
+          )}
+        </>
+      )}
     </MySection>
   );
 };

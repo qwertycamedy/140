@@ -1,18 +1,32 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { apiClient } from 'store/apiClient';
 import { loadStatus } from 'store/loadStatus';
 
 export const getCourseById = createAsyncThunk(
-  'courses/getCourseById',
+  'course/getCourseById',
   async ({ courseId }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/courses/${courseId}`,
-      );
+      const { data } = await apiClient.get(`/courses/${courseId}`);
 
       return data;
     } catch (err) {
-      console.log('ошибка при создании курса: ', err);
+      console.log('ошибка при получении курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const addCourseToProfile = createAsyncThunk(
+  'course/addCourseToProfile',
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.post(`/users/courses/`, {
+        course_id: courseId,
+      });
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курсов: ', err);
       return rejectWithValue(err.message);
     }
   },
@@ -20,6 +34,8 @@ export const getCourseById = createAsyncThunk(
 
 const initialState = {
   courseLoadStatus: 'idle',
+  addCourseLoadStatus: 'idle',
+
   course: null,
 };
 
@@ -44,6 +60,16 @@ const courseSlice = createSlice({
       .addCase(getCourseById.rejected, (state) => {
         state.courseLoadStatus = loadStatus.rejected;
         state.course = null;
+      });
+    builder
+      .addCase(addCourseToProfile.pending, (state) => {
+        state.addCourseLoadStatus = loadStatus.pending;
+      })
+      .addCase(addCourseToProfile.fulfilled, (state) => {
+        state.addCourseLoadStatus = loadStatus.fulfilled;
+      })
+      .addCase(addCourseToProfile.rejected, (state) => {
+        state.addCourseLoadStatus = loadStatus.rejected;
       });
   },
 });

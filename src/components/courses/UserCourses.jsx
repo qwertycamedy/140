@@ -3,8 +3,17 @@ import cl from './Courses.module.scss';
 import UserCourse from './userCourse/UserCourse';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import Loader from 'components/loader/Loader';
+import { loadStatus } from 'store/loadStatus';
+import NotFound from 'components/notFound/NotFound';
 
-const UserCourses = ({ userSlug, courses, currentUserCourse, setCurrentUserCourse }) => {
+const UserCourses = ({
+  userSlug,
+  courses,
+  coursesLoadStatus,
+  currentUserCourse,
+  setCurrentUserCourse,
+}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -12,7 +21,7 @@ const UserCourses = ({ userSlug, courses, currentUserCourse, setCurrentUserCours
   }, []);
 
   const onCourse = (item) => {
-    if (currentUserCourse?.id === item?.id) {
+    if (currentUserCourse?.ID === item?.ID) {
       dispatch(setCurrentUserCourse(null));
     } else {
       dispatch(setCurrentUserCourse(item));
@@ -22,18 +31,35 @@ const UserCourses = ({ userSlug, courses, currentUserCourse, setCurrentUserCours
   return (
     <MySection>
       <h1 className="title title-section">Ваши курсы</h1>
-      <div className={cl.courses}>
-        {courses?.map((obj, i) => (
-          <UserCourse
-            userSlug={userSlug}
-            course={obj}
-            key={obj.id}
-            index={i}
-            currentUserCourse={currentUserCourse}
-            onCourse={onCourse}
-          />
-        ))}
-      </div>
+      {coursesLoadStatus === loadStatus.pending && <Loader />}
+      {coursesLoadStatus === loadStatus.rejected && (
+        <NotFound
+          title={'Не удалось получить курсы'}
+          subtitle={
+            'К сожалению запрос получения курсов не смог отработать правильно, обратитесь к тех. поддержке'
+          }
+        />
+      )}
+      {coursesLoadStatus === loadStatus.fulfilled && (
+        <>
+          {courses && courses.length ? (
+            <div className={cl.courses}>
+              {courses?.map((obj, i) => (
+                <UserCourse
+                  userSlug={userSlug}
+                  course={obj}
+                  key={obj.ID}
+                  index={i}
+                  currentUserCourse={currentUserCourse}
+                  onCourse={onCourse}
+                />
+              ))}
+            </div>
+          ) : (
+            <NotFound title={'Курсы не найдены'} />
+          )}
+        </>
+      )}
     </MySection>
   );
 };

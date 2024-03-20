@@ -1,14 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
 
-import window from './slices/window/windowSlice'
-import auth from './slices/auth/authSlice'
-import header from './slices/header/headerSlice'
-import courses from './slices/courses/coursesSlice'
-import course from './slices/course/courseSlice'
-import test from './slices/test/testSlice'
-import createCourse from './slices/createCourse/createCourseSlice'
-import createLesson from './slices/createLesson/createLessonSlice'
-
+import window from './slices/window/windowSlice';
+import auth from './slices/auth/authSlice';
+import header from './slices/header/headerSlice';
+import courses from './slices/courses/coursesSlice';
+import course from './slices/course/courseSlice';
+import lessons from './slices/lessons/lessonsSlice';
+import lesson from './slices/lesson/lessonSlice';
+import test from './slices/test/testSlice';
+import createCourse from './slices/createCourse/createCourseSlice';
+import createLesson from './slices/createLesson/createLessonSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,13 +19,15 @@ export const store = configureStore({
 
     courses,
     course,
+    lessons,
+    lesson,
     test,
 
     createCourse,
-    createLesson
+    createLesson,
   },
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-})
+});

@@ -17,9 +17,9 @@ const Questions = () => {
       {questions?.map((q, i) => (
         <MyBtn
           classNames={clsx(cl.ques + ' btn-bg', {
-            'btn-accent': q.id === curQuestion?.id,
+            'btn-accent': q.ID === curQuestion?.ID,
           })}
-          key={q.id}
+          key={q.ID}
           onClick={() => toQuestion(q)}
         >
           {i + 1}

@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { apiClient } from 'store/apiClient';
 import { loadStatus } from 'store/loadStatus';
 
 export const createLesson = createAsyncThunk(
   'createLesson/createLesson',
   async (bodyParams, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/courses`,
+      const { data } = await apiClient.post(
+        `/courses`,
         bodyParams,
       );
 

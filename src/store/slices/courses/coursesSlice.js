@@ -1,14 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { apiClient } from 'store/apiClient';
 import { loadStatus } from 'store/loadStatus';
 
 export const getAllCourses = createAsyncThunk(
   'courses/getAllCourses',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/courses`,
-      );
+      const { data } = await apiClient.get(`/courses/`);
 
       return data;
     } catch (err) {
@@ -22,9 +20,7 @@ export const getRandomCourses = createAsyncThunk(
   'courses/getRandomCourses',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/courses/random`,
-      );
+      const { data } = await apiClient.get(`/courses/random`);
 
       return data;
     } catch (err) {
@@ -38,11 +34,23 @@ export const filterCourses = createAsyncThunk(
   'courses/filterCourses',
   async ({ category, searchValue }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/courses/filter?category=${category}&search=${searchValue}`,
+      const { data } = await apiClient.get(
+        `/courses/filter?category=${category}&search=${searchValue}`,
       );
+
+      return data;
+    } catch (err) {
+      console.log('ошибка при создании курса: ', err);
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const getUserCourses = createAsyncThunk(
+  'courses/getUserCourses',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.get(`/users/courses`);
 
       return data;
     } catch (err) {
@@ -60,80 +68,8 @@ const initialState = {
   randomCoursesLoadStatus: 'idle',
   randomCourses: null,
 
-  userCourses: [
-    {
-      id: 1,
-      category: 'Имеется база',
-      title: 'Самая вышка!',
-      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
-      lessons: [
-        {
-          id: 1,
-          label: 'Где я и куда идти?',
-          path: '1',
-          isPassed: true,
-        },
-        {
-          id: 2,
-          label: 'Ориентиры для выпускника с большими планами и мечтами',
-          path: '2',
-          isPassed: false,
-        },
-        {
-          id: 3,
-          label: 'Становится потненько..',
-          path: '3',
-          isPassed: false,
-        },
-        {
-          id: 4,
-          label: 'Меня уже никто не остановит!',
-          path: '4',
-          isPassed: false,
-        },
-      ],
-      style: {
-        background: '#F6F6DC',
-        color: 'dark',
-      },
-    },
-    {
-      id: 2,
-      category: 'Имеется база',
-      title: 'Грантик со скрипом',
-      descr: 'Вам нужно набрать как можно больше баллов не смотря ни на что!',
-      lessons: [
-        {
-          id: 1,
-          label: 'Где я и куда идти?',
-          path: '1',
-          isPassed: true,
-        },
-        {
-          id: 2,
-          label: 'Ориентиры для выпускника с большими планами и мечтами',
-          path: '2',
-          isPassed: false,
-        },
-        {
-          id: 3,
-          label: 'Становится потненько..',
-          path: '3',
-          isPassed: false,
-        },
-        {
-          id: 4,
-          label: 'Меня уже никто не остановит!',
-          path: '4',
-          isPassed: false,
-        },
-      ],
-      style: {
-        background: '#F6DCDC',
-        color: 'dark',
-      },
-    },
-  ],
+  userCoursesLoadStatus: 'idle',
+  userCourses: null,
   currentUserCourse: null,
 
   adminCourses: [
@@ -296,6 +232,18 @@ const coursesSlice = createSlice({
       .addCase(filterCourses.rejected, (state) => {
         state.filtersLoadStatus = loadStatus.rejected;
         state.courses = null;
+      });
+    builder
+      .addCase(getUserCourses.pending, (state) => {
+        state.userCoursesLoadStatus = loadStatus.pending;
+      })
+      .addCase(getUserCourses.fulfilled, (state, action) => {
+        state.userCoursesLoadStatus = loadStatus.fulfilled;
+        state.userCourses = action.payload.data;
+      })
+      .addCase(getUserCourses.rejected, (state) => {
+        state.userCoursesLoadStatus = loadStatus.rejected;
+        state.userCourses = null;
       });
   },
 });

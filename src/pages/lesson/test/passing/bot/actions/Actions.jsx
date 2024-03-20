@@ -12,14 +12,14 @@ const Actions = () => {
   const { questions, curQuestion } = useSelector(testSel);
 
   const toPrev = () => {
-    const newCur = questions.find((ques) => ques.id === curQuestion.id - 1);
+    const newCur = questions.find((ques) => ques.ID === curQuestion.ID - 1);
     if (newCur) {
       dispatch(setCurQuestion(newCur));
     }
   };
 
   const toNext = () => {
-    const newCur = questions.find((ques) => ques.id === curQuestion.id + 1);
+    const newCur = questions.find((ques) => ques.ID === curQuestion.ID + 1);
     if (newCur) {
       dispatch(setCurQuestion(newCur));
     }

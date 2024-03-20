@@ -8,12 +8,12 @@ const Answer = ({ ans, i }) => {
   const { curQuestion, questions } = useSelector(testSel);
 
   const onMark = () => {
-    dispatch(markAnswer({ quesId: curQuestion.id, ansId: ans.id }));
+    dispatch(markAnswer({ quesId: curQuestion.ID, ansId: ans.ID }));
   };
 
   return (
     <li
-      className={clsx(cl.ans, { 'btn-accent': ans.isMarked })}
+      className={clsx(cl.ans, { 'btn-accent': ans.is_marked })}
       onClick={onMark}
     >
       <span className={cl.index + ' title title-block'}>{i + 1}</span>

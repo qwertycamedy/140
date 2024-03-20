@@ -23,45 +23,52 @@
   z-index: 1;
 }
 
-.percent {
-  color: var(--gray);
-  font-size: 10px;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.count {
-  color: var(--dark) !important;
+.descr {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .lessons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   border-radius: 6px;
   border: 1px solid var(--gray-l-a);
   position: relative;
   top: -10px;
   z-index: 0;
-  transition: padding .2s linear;
+  transition: padding 0.2s linear;
   padding: 0 15px 0;
 }
 
 .lesson {
-    color: var(--dark);
-    transition: color .2s linear;
-    &__passed {
-        color: var(--gray-l-a) !important;
-        pointer-events: none;
-    }
+  color: var(--dark);
+  transition: color 0.2s linear;
+  &__passed {
+    color: var(--gray-l-a) !important;
+    pointer-events: none;
+  }
 
-    @media(any-hover: hover) {
-        &:hover {
-            color: var(--accent-h);
-        }
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--accent-h);
     }
+  }
 
-    &:active {
-        color: var(--accent-a)
-    }
+  &:active {
+    color: var(--accent-a);
+  }
+}
+
+.notFound {
+  &_title {
+    font-size: 16px;
+  }
+
+  &_subtitle {
+    font-size: 10px;
+  }
 }

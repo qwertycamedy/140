@@ -3,16 +3,25 @@ import UserCourses from 'components/courses/UserCourses';
 import Similar from 'components/courses/similar/Similar';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { authSel } from 'store/slices/auth/authSlice';
 import {
   coursesSel,
+  getRandomCourses,
+  getUserCourses,
   setCurrentUserCourse,
 } from 'store/slices/courses/coursesSlice';
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector(authSel);
-  const { courses, userCourses, currentUserCourse } = useSelector(coursesSel);
+  const { userCourses, userCoursesLoadStatus, randomCourses, randomCoursesLoadStatus, currentUserCourse } = useSelector(coursesSel);
+
+  useEffect(() => {
+    dispatch(getUserCourses());
+    dispatch(getRandomCourses());
+  }, []);
 
   return (
     <>
@@ -22,12 +31,13 @@ const ProfilePage = () => {
         metaDescr={`140 | ${user ? user.name : 'Личный кабинет'}`}
       >
         <UserCourses
-          userSlug={user?.slug}
+          userSlug={user?.ID}
           courses={userCourses}
+          coursesLoadStatus={userCoursesLoadStatus}
           currentUserCourse={currentUserCourse}
           setCurrentUserCourse={setCurrentUserCourse}
         />
-        <Similar courses={courses} />
+        <Similar courses={randomCourses} coursesLoadStatus={randomCoursesLoadStatus} />
       </MyPage>
       <Footer />
     </>

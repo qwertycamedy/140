@@ -33,7 +33,7 @@ const Header = ({ goBack, headerCl, containerCl, innerCl }) => {
         <div className={`${containerCl} container`}>
           <div className={`${innerCl} ${cl.inner}`}>
             {goBack ? <GoBack /> : <Logo classNames={cl.logo} />}
-            {pathname === `/profile/${user.slug}` ||
+            {pathname === `/profile/${user?.ID}` ||
             pathname.includes(`/admin`) ? (
               <Profile />
             ) : (
