@@ -83,6 +83,7 @@ func DeleteUserById(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	var body struct {
+		Name     string
 		Email    string
 		Password string
 	}
@@ -112,15 +113,14 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: body.Email, Password: string(hash)}
+	user := models.User{Name: body.Name, Email: body.Email, Password: string(hash)}
 	result = models.DB.Create(&user)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to create user.",
 		})
 	}
-
-	// Respond
+	
 	c.JSON(http.StatusOK, gin.H{"message": "Регистрация прошла успешно!"})
 }
 
@@ -182,6 +182,11 @@ func GetProfile(c *gin.Context) {
 	})
 }
 
+func Logout(c *gin.Context) {
+	c.SetCookie("Authorization", "", -1, "/", "", false, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Выход выполнен успешно!"})
+}
+
 func GetUserCourses(c *gin.Context) {
 	userID, err := models.GetUserIDFromToken(c)
 	if err != nil {
@@ -199,30 +204,28 @@ func GetUserCourses(c *gin.Context) {
 }
 
 func GetUserCourseByID(c *gin.Context) {
-    userID, err := models.GetUserIDFromToken(c)
-    if err != nil {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or missing token"})
-        return
-    }
+	userID, err := models.GetUserIDFromToken(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or missing token"})
+		return
+	}
 
-    courseID := c.Param("courseId")
+	courseID := c.Param("courseId")
 
-    var userCourse models.UserCourse
-    if err := models.DB.Where("user_id = ? AND course_id = ?", userID, courseID).First(&userCourse).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found for this user"})
-        return
-    }
+	var userCourse models.UserCourse
+	if err := models.DB.Where("user_id = ? AND course_id = ?", userID, courseID).First(&userCourse).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Course not found for this user"})
+		return
+	}
 
-    var course models.Course
-    if err := models.DB.First(&course, courseID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
-        return
-    }
+	var course models.Course
+	if err := models.DB.First(&course, courseID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+		return
+	}
 
-    c.JSON(http.StatusOK, gin.H{"data": course})
+	c.JSON(http.StatusOK, gin.H{"data": course})
 }
-
-
 
 func AddCourseToUser(c *gin.Context) {
 	userID, err := models.GetUserIDFromToken(c)
