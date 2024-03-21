@@ -2,6 +2,7 @@ import MyBtn from 'components/_ui/btn/MyBtn';
 import cl from './Actions.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  setCorrectAnswersCount,
   setCurQuestion,
   setIsComplete,
   testSel,
@@ -28,6 +29,16 @@ const Actions = () => {
   const toFinish = () => {
     const isConfirm = confirm('Вы действительно хотите завершить тест?');
     if (isConfirm) {
+      let newCorrectCount = 0;
+      questions.forEach((question) => {
+        question.answers.forEach((answer) => {
+          if (answer.is_marked && answer.is_correct) {
+            newCorrectCount++;
+            console.log('new correct count: ', newCorrectCount);
+          }
+        });
+      });
+      dispatch(setCorrectAnswersCount(newCorrectCount));
       dispatch(setIsComplete(true));
     }
   };

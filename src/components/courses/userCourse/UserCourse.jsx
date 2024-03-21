@@ -83,10 +83,10 @@ const UserCourse = ({
         {lessonsLoadStatus === loadStatus.pending && <Loader />}
         {lessonsLoadStatus === loadStatus.rejected && (
           <NotFound
-            title={'Не удалось получить курсы'}
+            title={'Не удалось получить уроки'}
             titleCl={cl.notFound_title}
             subtitle={
-              'К сожалению запрос получения курсов не смог отработать правильно, обратитесь к тех. поддержке'
+              'К сожалению запрос получения уроков не смог отработать правильно, обратитесь к тех. поддержке'
             }
             subtitleCl={cl.notFound_subtitle}
           />
@@ -108,7 +108,7 @@ const UserCourse = ({
               ))
             ) : (
               <NotFound
-                title={'Курсы не найдены'}
+                title={'Уроки не найдены'}
                 titleCl={cl.notFound_title}
                 subtitleCl={cl.notFound_subtitle}
               />

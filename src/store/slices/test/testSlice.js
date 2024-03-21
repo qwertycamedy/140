@@ -24,6 +24,7 @@ const initialState = {
   questionsLoadStatus: 'idle',
   questions: null,
   curQuestion: null,
+  correctAnswersCount: 0,
 };
 
 const testSlice = createSlice({
@@ -63,6 +64,11 @@ const testSlice = createSlice({
     setIsComplete: (state, action) => {
       state.isComplete = action.payload;
     },
+
+    setCorrectAnswersCount: (state, action) => {
+      console.log(action);
+      state.correctAnswersCount = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,7 +92,12 @@ const testSlice = createSlice({
   },
 });
 
-export const { setCurQuestion, markAnswer, setIsComplete } = testSlice.actions;
+export const {
+  setCurQuestion,
+  markAnswer,
+  setIsComplete,
+  setCorrectAnswersCount,
+} = testSlice.actions;
 export const testSel = (state) => state.test;
 
 export default testSlice.reducer;

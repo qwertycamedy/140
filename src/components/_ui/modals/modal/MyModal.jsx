@@ -1,5 +1,4 @@
 
-import './MyModal.scss';
 import { clsx } from 'clsx';
 
 import closeImg from 'assets/img/close.svg';

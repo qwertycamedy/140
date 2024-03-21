@@ -13,11 +13,13 @@ import {
   clearCourse,
   courseSel,
   getCourseById,
+  setAddModal,
 } from 'store/slices/course/courseSlice';
 import { useParams } from 'react-router-dom';
 import Loader from 'components/loader/Loader';
 import NotFound from 'components/notFound/NotFound';
 import { loadStatus } from 'store/loadStatus';
+import AddModal from './addModal/AddModal';
 
 const CoursePage = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const CoursePage = () => {
     dispatch(clearCourse());
     dispatch(getCourseById({ courseId: id }));
     dispatch(getRandomCourses());
+    dispatch(setAddModal(false));
   }, [id]);
 
   console.log(course);
@@ -68,6 +71,7 @@ const CoursePage = () => {
                   courses={randomCourses}
                   coursesLoadStatus={randomCoursesLoadStatus}
                 />
+                <AddModal course={course} />
               </>
             ) : (
               <NotFound title={'Курс не найден'} />

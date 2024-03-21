@@ -1,0 +1,25 @@
+.other {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.link {
+    font-size: 12px !important;
+    line-height: 120% !important;
+}
+
+.admin {
+    color: var(--gray) !important;
+
+    @media(any-hover: hover) {
+        &:hover {
+            color: var(--accent-h) !important;
+        }
+    }
+
+    &:active {
+        color: var(--accent-a) !important;
+    }
+}

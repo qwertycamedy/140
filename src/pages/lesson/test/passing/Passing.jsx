@@ -1,24 +1,16 @@
 import MySection from 'components/_ui/section/MySection';
 import outerCl from '../../LessonPage.module.scss';
 import Bot from './bot/Bot';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurQuestion, testSel } from 'store/slices/test/testSlice';
+import { useSelector } from 'react-redux';
+import { testSel } from 'store/slices/test/testSlice';
 import Answers from './answers/Answers';
-import { useEffect } from 'react';
 import cl from './Passing.module.scss';
 import Loader from 'components/loader/Loader';
 import NotFound from 'components/notFound/NotFound';
 import { loadStatus } from 'store/loadStatus';
 
 const Passing = ({ course, lesson }) => {
-  const dispatch = useDispatch();
   const { questions, curQuestion, questionsLoadStatus } = useSelector(testSel);
-
-  useEffect(() => {
-    if (questions) {
-      dispatch(setCurQuestion(questions[0]));
-    }
-  }, []);
 
   console.log(questions, curQuestion);
 

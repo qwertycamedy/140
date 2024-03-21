@@ -15,51 +15,18 @@ import {
   Route,
   Routes,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
-import { loadStatus } from 'store/loadStatus';
-import { authSel, getProfile, logout } from 'store/slices/auth/authSlice';
+import { authSel, getProfile } from 'store/slices/auth/authSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const { isAuth, isAdmin, user, getProfileLoadStatus } = useSelector(authSel);
+  const { isAuth, isAdmin, user } = useSelector(authSel);
   const location = useLocation();
-  const navigate = useNavigate();
-  const pathname = location.pathname;
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // --- Redirects ---
-    if (getProfileLoadStatus === loadStatus.fulfilled) {
-      if (isAuth && isAdmin && !pathname.includes('admin')) {
-        alert(
-          'Вы являетесь админом и сейчас Вам недоступны страницы простых смертных',
-        );
-        return navigate(`/admin/${user.slug}`);
-      }
-      if (!isAdmin && pathname.substring(0, 6) === '/admin') {
-        alert(
-          'Станьте админом, чтобы получить право использовать данные страницы',
-        );
-        return navigate(`/`);
-      }
-
-      if (isAuth && pathname.includes('auth')) {
-        alert('Вы уже авторизованы');
-        return navigate(`/`);
-      }
-
-      if (!isAuth && pathname.includes('profile')) {
-        alert('Авторизуйтесь, чтобы получить доступ к данным страницам');
-        return navigate(`/auth/in`);
-      }
-
-      if (!isAuth && pathname === '/auth') {
-        return navigate('/auth/in');
-      }
-    }
-  }, [location, getProfileLoadStatus]);
+  }, [location]);
 
   useEffect(() => {
     const storedIsAuth = localStorage.getItem('is_auth');

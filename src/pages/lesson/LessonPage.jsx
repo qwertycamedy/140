@@ -1,10 +1,8 @@
 import MyPage from 'components/_ui/page/MyPage';
 import Header from 'components/header/Header';
-import Read from './read/Read';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSel } from 'store/slices/auth/authSlice';
 import { useParams } from 'react-router-dom';
-import Download from './download/Download';
 import Test from './test/Test';
 import { getLesson, lessonSel } from 'store/slices/lesson/lessonSlice';
 import { useEffect } from 'react';
@@ -15,14 +13,14 @@ import { courseSel, getCourseById } from 'store/slices/course/courseSlice';
 
 const LessonPage = () => {
   const dispatch = useDispatch();
-  const {course} = useSelector(courseSel)
+  const { course } = useSelector(courseSel);
   const { lesson, lessonLoadStatus } = useSelector(lessonSel);
   const { user } = useSelector(authSel);
   const { courseId, lessonId } = useParams();
 
   useEffect(() => {
-    dispatch(getCourseById({ courseId }));
-    dispatch(getLesson({ courseId, lessonId }));
+      dispatch(getCourseById({ courseId }));
+      dispatch(getLesson({ courseId, lessonId }));
   }, []);
 
   return (

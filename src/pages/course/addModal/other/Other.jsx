@@ -1,39 +1,27 @@
-import { Link } from 'react-router-dom';
-import cl from './Other.module.scss';
 import { useDispatch } from 'react-redux';
+import cl from './Other.module.scss';
 
-const Other = ({ toIn, toUp, setToIn, setToUp, setToAdmin }) => {
+const Other = ({ toIn, setToIn, toUp, setToUp }) => {
   const dispatch = useDispatch();
-
   return (
     <div className={cl.other}>
       {toIn ? (
-        <Link
+        <button
           className={cl.link + ' link link-accent link-ul-a'}
-          to={'/auth/up'}
           onClick={() => dispatch(setToUp())}
         >
           Регистрация
-        </Link>
+        </button>
       ) : (
         toUp && (
-          <Link
+          <button
             className={cl.link + ' link link-accent link-ul-a'}
-            to={'/auth/in'}
             onClick={() => dispatch(setToIn())}
           >
             Авторизация
-          </Link>
+          </button>
         )
       )}
-
-      {/* <Link
-        className={cl.link + ` ${cl.admin} link link-ul-a`}
-        to={"/auth/admin"}
-        onClick={() => dispatch(setToAdmin())}
-      >
-        Админка
-      </Link> */}
     </div>
   );
 };

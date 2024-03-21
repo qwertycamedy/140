@@ -37,6 +37,8 @@ const initialState = {
   addCourseLoadStatus: 'idle',
 
   course: null,
+
+  addModal: false,
 };
 
 const courseSlice = createSlice({
@@ -47,6 +49,9 @@ const courseSlice = createSlice({
       state.courseLoadStatus = 'idle';
       state.course = null;
     },
+    setAddModal: (state,action) => {
+      state.addModal = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -74,7 +79,7 @@ const courseSlice = createSlice({
   },
 });
 
-export const { clearCourse } = courseSlice.actions;
+export const { clearCourse, setAddModal } = courseSlice.actions;
 export const courseSel = (state) => state.course;
 
 export default courseSlice.reducer;
