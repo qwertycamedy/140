@@ -70,8 +70,7 @@ func CreateCourse(c *gin.Context) {
 			return
 		}
 
-		baseURL := utils.HandleBaseUrl()
-		course.Image = baseURL + filePath[2:]
+		course.Image = filePath[2:]
 	} else if err != http.ErrMissingFile {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
