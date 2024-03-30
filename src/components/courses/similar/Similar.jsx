@@ -6,6 +6,7 @@ import 'swiper/css';
 import Course from '../course/Course';
 import { loadStatus } from 'store/loadStatus';
 import Loader from 'components/loader/Loader';
+import NotFound from 'components/notFound/NotFound';
 
 const Similar = ({ title, courses, coursesLoadStatus }) => {
   return (

@@ -29,6 +29,7 @@ const In = () => {
           try {
             navigate(`/profile/${action.payload.data.ID}`);
           } catch (error) {
+            alert('Неправильный email или пароль')
             console.log('get profile error: ', error);
           }
         });

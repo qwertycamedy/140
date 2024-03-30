@@ -15,7 +15,11 @@ const Categories = () => {
 
   const onCategory = (category) => {
     dispatch(setCurCategory(category));
-    dispatch(filterCourses({ category: category.value, searchValue }));
+    if (category.id === curCategory?.id) {
+      dispatch(filterCourses({ category: '',  searchValue }));
+    } else {
+      dispatch(filterCourses({ category: category.value, searchValue }));
+    }
   };
 
   return (

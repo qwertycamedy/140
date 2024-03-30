@@ -18,10 +18,12 @@ import {
   setToUp,
 } from 'store/slices/auth/authSlice';
 import outerCl from '../AuthPage.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Up = () => {
   const dispatch = useDispatch();
   const { toIn, toUp, name, email, pass, confirmPass } = useSelector(authSel);
+  const navigate = useNavigate();
 
   const onReg = () => {
     if(pass === confirmPass) {
@@ -37,7 +39,7 @@ const Up = () => {
                 }
               });
             } catch (err) {
-              console.log('reg error: ', err);
+              console.log('login error: ', err);
             }
           });
         } catch (err) {
