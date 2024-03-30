@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"backend/models"
-	"backend/utils"
 	"errors"
 	"net/http"
 	"path/filepath"
@@ -64,13 +63,13 @@ func CreateCourse(c *gin.Context) {
 
 	file, err := c.FormFile("image")
 	if err == nil {
-		filePath := "./assets/img/" + filepath.Base(file.Filename)
+		filePath := "../front/src/assets/back-img/" + filepath.Base(file.Filename)
 		if err := c.SaveUploadedFile(file, filePath); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
 			return
 		}
 
-		course.Image = filePath[2:]
+		course.Image = filePath[8:]
 	} else if err != http.ErrMissingFile {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
@@ -109,14 +108,13 @@ func UpdateCourseById(c *gin.Context) {
 
 	file, err := c.FormFile("image")
 	if err == nil {
-		filePath := "./assets/img/" + strconv.Itoa(int(course.ID)) + "_" + filepath.Base(file.Filename)
+		filePath := "../front/src/assets/back-img/" + strconv.Itoa(int(course.ID)) + "_" + filepath.Base(file.Filename)
 		if err := c.SaveUploadedFile(file, filePath); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Не удалось сохранить файл"})
 			return
 		}
-		
-		baseURL := utils.HandleBaseUrl()
-		course.Image = baseURL + filePath[2:]
+
+		course.Image = filePath[8:]
 	} else if err != http.ErrMissingFile {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Не удалось загрузить файл"})
 		return
