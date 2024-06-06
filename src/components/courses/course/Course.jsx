@@ -11,7 +11,7 @@ const Course = ({ course, classNames, categoryCl, titleCl, descrCl }) => {
         color: course.text_color === 'dark' ? '#000000' : '#ffffff',
       }}
     >
-      <p className={`${categoryCl} text-10 color-gray`}>{course.category}</p>
+      <p className={`${categoryCl} text-10 color-gray`} style={{color: course.text_color === 'light' ? '#ffffff' : ''}}>{course.category}</p>
       <h5 className={`${cl.title} title title-block ${titleCl}`}>
         {course.name}
       </h5>

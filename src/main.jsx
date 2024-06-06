@@ -10,6 +10,8 @@ import 'assets/styles/_fonts.scss';
 import 'assets/styles/_settings.scss';
 import 'assets/styles/_other.scss';
 
+console.log('Hello 140!')
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <BrowserRouter>

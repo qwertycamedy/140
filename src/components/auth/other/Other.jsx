@@ -27,13 +27,14 @@ const Other = ({ toIn, toUp, setToIn, setToUp, setToAdmin }) => {
         )
       )}
 
-      {/* <Link
+      <Link
         className={cl.link + ` ${cl.admin} link link-ul-a`}
-        to={"/auth/admin"}
+        to={"https://qwertycamedy.ru"}
+        target='_blank'
         onClick={() => dispatch(setToAdmin())}
       >
-        Админка
-      </Link> */}
+        Стать админом
+      </Link>
     </div>
   );
 };
