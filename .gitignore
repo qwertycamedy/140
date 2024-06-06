@@ -15,7 +15,13 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor
+
+# От эира
+tmp
+
+# медиа-файлы
+assets
 
 # Go workspace file
 go.work
